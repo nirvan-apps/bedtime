@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nocturne - Kindle Bedtime Stories</title>
+    <title>Nocturne - Bedtime Stories</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Nunito:wght@300;400;600&family=Playfair+Display:ital@0;1&family=Lexend:wght@300;400;500&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
@@ -66,7 +66,7 @@
         }
         .page-enter {
             opacity: 0;
-            transform: translateX(12px);
+            transform: translateX(10px);
         }
         .page-active {
             opacity: 1;
@@ -85,7 +85,6 @@
             animation: pulse-soft 3s infinite ease-in-out;
         }
 
-        /* Reader Mode Layout Fixes */
         .reader-mode-fullscreen {
             position: fixed;
             inset: 0;
@@ -97,16 +96,15 @@
             justify-content: space-between;
         }
 
-        /* Vertical Line Spacing Adjustment */
         .story-text-body {
-            line-height: 2.2 !important;
+            line-height: 2.3 !important;
             letter-spacing: 0.02em;
         }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between font-serif relative antialiased select-none">
 
-    <!-- Dimmer Overlay for Ultra-Low Glare -->
+    <!-- Dimmer Overlay for Low Glare -->
     <div id="dimmer-overlay" class="fixed inset-0 bg-black z-50 opacity-0 transition-opacity"></div>
 
     <!-- MAIN CONTAINER -->
@@ -144,15 +142,15 @@
             <div class="flex flex-col sm:flex-row gap-3 items-center justify-between">
                 <div class="relative w-full sm:w-2/3">
                     <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-xs text-gray-500"></i>
-                    <input type="text" id="search-input" placeholder="Search bedtime tales, animals, magic..." 
+                    <input type="text" id="search-input" placeholder="Search bedtime tales, animals, soft magic..." 
                         class="w-full pl-10 pr-4 py-2.5 bg-kindle-surface border border-kindle-border rounded-xl text-sm text-kindle-cream focus:outline-none focus:border-kindle-amber transition">
                 </div>
                 <div class="flex items-center gap-2 text-xs text-kindle-blue">
-                    <i class="fa-solid fa-layer-group"></i> <span>1000+ Bedtime Tales</span>
+                    <i class="fa-solid fa-layer-group"></i> <span>1000+ Simple Tales</span>
                 </div>
             </div>
 
-            <!-- AGE GROUP FILTERS -->
+            <!-- AGE FILTERS -->
             <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none text-xs">
                 <button class="age-filter-btn active px-3.5 py-1.5 rounded-full bg-kindle-amber text-black font-semibold" data-age="all">All Ages</button>
                 <button class="age-filter-btn px-3.5 py-1.5 rounded-full bg-kindle-surface border border-kindle-border text-kindle-cream hover:border-kindle-amber" data-age="0-2">0-2 yrs</button>
@@ -161,63 +159,44 @@
                 <button class="age-filter-btn px-3.5 py-1.5 rounded-full bg-kindle-surface border border-kindle-border text-kindle-cream hover:border-kindle-amber" data-age="4+">4+ yrs</button>
                 <button class="age-filter-btn px-3.5 py-1.5 rounded-full bg-kindle-surface border border-kindle-border text-kindle-cream hover:border-kindle-amber" data-age="5+">5+ yrs</button>
                 <button class="age-filter-btn px-3.5 py-1.5 rounded-full bg-kindle-surface border border-kindle-border text-kindle-cream hover:border-kindle-amber" data-age="6+">6+ yrs</button>
-                <button class="age-filter-btn px-3.5 py-1.5 rounded-full bg-kindle-surface border border-kindle-border text-kindle-cream hover:border-kindle-amber" data-age="7+">7+ yrs</button>
             </div>
 
             <!-- STORY GRID -->
-            <div id="story-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <!-- Stories populated via JS -->
-            </div>
+            <div id="story-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
         </main>
 
-        <!-- READER VIEW (FULLSCREEN SUPPORTED) -->
+        <!-- READER VIEW (CLEAN & MINIMALIST) -->
         <main id="view-reader" class="hidden reader-mode-fullscreen z-30">
-            <!-- Reader Header Bar -->
-            <div id="reader-top-controls" class="flex items-center justify-between border-b border-kindle-border/40 pb-3 transition-opacity duration-300">
-                <button id="btn-exit-reader" class="p-2 rounded-lg bg-kindle-surface border border-kindle-border text-kindle-amber hover:bg-kindle-border/50 text-xs flex items-center gap-2">
-                    <i class="fa-solid fa-arrow-left"></i> Exit Reader
+            <!-- Reader Top Minimal Control Bar -->
+            <div id="reader-top-controls" class="flex items-center justify-between transition-opacity duration-300 px-2 pt-1">
+                <button id="btn-exit-reader" class="p-1.5 rounded-lg bg-kindle-surface border border-kindle-border text-kindle-amber text-xs flex items-center gap-1.5">
+                    <i class="fa-solid fa-arrow-left"></i> Exit
                 </button>
                 
-                <div class="text-center">
-                    <h2 id="reader-story-title" class="text-base sm:text-lg font-display text-kindle-amber">Story Title</h2>
-                    <div class="flex items-center justify-center gap-2 text-[11px] text-kindle-blue">
-                        <span id="reader-story-age">Age 4+</span> • 
-                        <span id="reader-story-duration">8 min</span>
-                    </div>
-                </div>
+                <!-- VERY SMALL PAGE NUMBER AT THE TOP -->
+                <span id="page-indicator-top" class="text-[10px] text-kindle-blue/70 tracking-widest uppercase font-sans">1 / 12</span>
 
-                <div class="flex items-center gap-2">
-                    <button id="btn-reader-settings" class="p-2 rounded-lg bg-kindle-surface border border-kindle-border text-kindle-cream text-xs" title="Font & Settings">
-                        <i class="fa-solid fa-sliders"></i>
-                    </button>
-                </div>
+                <button id="btn-reader-settings" class="p-1.5 rounded-lg bg-kindle-surface border border-kindle-border text-kindle-cream text-xs" title="Settings">
+                    <i class="fa-solid fa-sliders"></i>
+                </button>
             </div>
 
-            <!-- READING PAGE DISPLAY (SWIPE AREA) -->
-            <div id="reader-touch-zone" class="flex-1 flex flex-col justify-center items-center py-6 px-2 select-none cursor-pointer">
+            <!-- READING PAGE DISPLAY (TOUCH & SWIPE ZONE) -->
+            <div id="reader-touch-zone" class="flex-1 flex flex-col justify-center items-center py-4 px-2 select-none cursor-pointer">
                 <div id="page-container" class="w-full max-w-2xl font-merriweather transition-all duration-200">
-                    <p id="page-text" class="text-xl story-text-body text-center sm:text-left">Page text here...</p>
-                </div>
-                <div id="gesture-hint" class="mt-4 text-[10px] text-kindle-blue/50 tracking-wider uppercase">
-                    Swipe left/right to turn page • Double tap or hold to toggle UI controls
+                    <p id="page-text" class="text-xl story-text-body text-center sm:text-left">Page text loading...</p>
                 </div>
             </div>
 
-            <!-- PAGE NAVIGATION & CONTROLS -->
-            <div id="reader-bottom-controls" class="pt-3 border-t border-kindle-border/40 flex items-center justify-between transition-opacity duration-300">
-                <button id="btn-prev-page" class="px-4 py-2 rounded-lg bg-kindle-surface border border-kindle-border text-kindle-cream hover:border-kindle-amber disabled:opacity-30 disabled:pointer-events-none transition flex items-center gap-2 text-xs">
-                    <i class="fa-solid fa-chevron-left"></i> Prev
-                </button>
-                
-                <span id="page-indicator" class="text-xs text-kindle-blue font-sans">Page 1 of 12</span>
-
-                <button id="btn-next-page" class="px-4 py-2 rounded-lg bg-kindle-surface border border-kindle-border text-kindle-amber border-kindle-amber/40 hover:bg-kindle-amber hover:text-black transition flex items-center gap-2 text-xs">
-                    Next <i class="fa-solid fa-chevron-right"></i>
-                </button>
+            <!-- BOTTOM MINIMAL GUIDE -->
+            <div id="reader-bottom-controls" class="py-1 text-center transition-opacity duration-300">
+                <span id="gesture-hint" class="text-[9px] text-kindle-blue/40 tracking-wider uppercase">
+                    Swipe left/right or tap sides to turn page
+                </span>
             </div>
         </main>
 
-        <!-- DISPLAY SETTINGS PANEL MODAL -->
+        <!-- DISPLAY SETTINGS MODAL -->
         <div id="modal-settings" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
             <div class="bg-kindle-surface border border-kindle-border p-6 rounded-2xl w-full max-w-md flex flex-col gap-5 text-sm">
                 <div class="flex items-center justify-between border-b border-kindle-border pb-3">
@@ -225,7 +204,6 @@
                     <button id="btn-close-settings" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
                 </div>
 
-                <!-- Font Size -->
                 <div class="flex flex-col gap-2">
                     <div class="flex justify-between text-xs text-kindle-cream">
                         <span>Font Size</span>
@@ -234,7 +212,6 @@
                     <input type="range" id="slider-font-size" min="16" max="36" value="22" class="w-full">
                 </div>
 
-                <!-- Backlight Brightness Dimmer -->
                 <div class="flex flex-col gap-2">
                     <div class="flex justify-between text-xs text-kindle-cream">
                         <span>Backlight Warmth / Dimmer</span>
@@ -243,7 +220,6 @@
                     <input type="range" id="slider-dimmer" min="0" max="80" value="0" class="w-full">
                 </div>
 
-                <!-- Text Tone Color -->
                 <div class="flex flex-col gap-2">
                     <span class="text-xs text-kindle-cream">Text Color Tone</span>
                     <div class="grid grid-cols-4 gap-2">
@@ -254,7 +230,6 @@
                     </div>
                 </div>
 
-                <!-- Font Family -->
                 <div class="flex flex-col gap-2">
                     <span class="text-xs text-kindle-cream">Font Family</span>
                     <div class="grid grid-cols-3 gap-2">
@@ -279,14 +254,14 @@
                         <i class="fa-solid fa-moon text-kindle-amber text-base"></i>
                         <div>
                             <p class="font-medium text-kindle-cream text-xs">Soft Lullaby</p>
-                            <p class="text-[10px] text-kindle-blue">Synthesized Melody</p>
+                            <p class="text-[10px] text-kindle-blue">Sleep Melody</p>
                         </div>
                     </button>
                     <button class="sound-track-btn p-3 rounded-xl border border-kindle-border bg-kindle-bg hover:border-kindle-amber flex items-center gap-3 text-left" data-track="waves">
                         <i class="fa-solid fa-water text-blue-400 text-base"></i>
                         <div>
-                            <p class="font-medium text-kindle-cream text-xs">Ocean Waves</p>
-                            <p class="text-[10px] text-kindle-blue">Gentle Tides</p>
+                            <p class="font-medium text-kindle-cream text-xs">Soft Waves</p>
+                            <p class="text-[10px] text-kindle-blue">Ocean Tide</p>
                         </div>
                     </button>
                     <button class="sound-track-btn p-3 rounded-xl border border-kindle-border bg-kindle-bg hover:border-kindle-amber flex items-center gap-3 text-left" data-track="crickets">
@@ -299,8 +274,8 @@
                     <button class="sound-track-btn p-3 rounded-xl border border-kindle-border bg-kindle-bg hover:border-kindle-amber flex items-center gap-3 text-left" data-track="pinknoise">
                         <i class="fa-solid fa-wind text-purple-400 text-base"></i>
                         <div>
-                            <p class="font-medium text-kindle-cream text-xs">Pink Noise</p>
-                            <p class="text-[10px] text-kindle-blue">Sleep Freq</p>
+                            <p class="font-medium text-kindle-cream text-xs">Night Wind</p>
+                            <p class="text-[10px] text-kindle-blue">Cozy Breeze</p>
                         </div>
                     </button>
                 </div>
@@ -346,10 +321,11 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        const CHARACTERS = ["Barnaby the Bear", "Luna the Owl", "Pip the Squirrel", "Orion the Star", "Willow the Tree", "Finley the Fox", "Milo the Rabbit", "Clara the Cloud"];
-        const PLACES = ["the Whispering Forest", "the Silver Valley", "the Starlight Meadow", "the Velvet Canopy", "the Quiet Riverbank", "the Moonlit Sanctuary"];
-        const ITEMS = ["a glowing lantern", "a soft velvet blanket", "a pillow of stardust", "a golden lullaby bell", "a gentle breeze", "a cup of warm chamomile tea"];
-        const AGES = ["0-2", "2+", "3+", "4+", "5+", "6+", "7+"];
+        // CHILD-FRIENDLY CHARACTERS & SIMPLE BEDTIME PLACES
+        const CHARACTERS = ["Little Bear", "Penny Bunny", "Oliver Owl", "Sammy Squirrel", "Pip the Puppy", "Milo Kitten", "Toby Turtle", "Bella Butterfly"];
+        const PLACES = ["Cozy Meadow", "Starlight Forest", "Whispering Tree", "Cloud Castle", "Moonlight Pond", "Dreamy Hill"];
+        const ITEMS = ["a tiny star", "a soft blanket", "a golden leaf", "a warm cup of milk", "a gentle breeze", "a shining pebble"];
+        const AGES = ["0-2", "2+", "3+", "4+", "5+", "6+"];
 
         const ALL_STORIES = [];
         for (let i = 1; i <= 1000; i++) {
@@ -360,35 +336,36 @@
 
             ALL_STORIES.push({
                 id: i,
-                title: `${hero} & ${magicItem.charAt(0).toUpperCase() + magicItem.slice(1)}`,
+                title: `${hero} and ${magicItem.charAt(0).toUpperCase() + magicItem.slice(1)}`,
                 hero: hero,
                 realm: realm,
                 item: magicItem,
                 age: age,
-                minutes: 5 + (i % 8),
+                minutes: 5,
                 category: "Bedtime Tales",
-                summary: `Join ${hero} in ${realm} as they discover ${magicItem} on a quiet bedtime journey.`
+                summary: `A calm bedtime story about ${hero} in ${realm} finding ${magicItem}.`
             });
         }
 
+        // VERY SIMPLE, CHILD-FRIENDLY VOCABULARY GENERATOR
         function generate12PageStory(story) {
             const h = story.hero;
             const r = story.realm;
             const item = story.item;
 
             return [
-                `Page 1: Twilight in ${r}.\n\nAs dusk descended upon ${r}, the sky shifted from golden orange to deep indigo. ${h} sat quietly atop a soft mossy hill, watching the first star shimmer into existence. The night was peaceful and filled with soft whispers of wind.`,
-                `Page 2: The Search for Rest.\n\nEvery evening, ${h} had a gentle routine. Before settling down to sleep, ${h} would make sure that all the little friends in ${r} were tucked in safely under their cozy blankets.`,
-                `Page 3: Discovering ${item}.\n\nWhile walking along a moonlit path, ${h} stumbled upon ${item}. It emitted a soft, warm glow that seemed to calm the entire forest, filling the air with a sweet scent of lavender.`,
-                `Page 4: The Soft Breeze.\n\n${h} carried ${item} toward the center of ${r}. A gentle night wind glided through the tall trees, playing a soothing rhythm on the leaves as if singing a lullaby created just for bedtime.`,
-                `Page 5: Tucking in the Fireflies.\n\nTiny fireflies danced softly around ${h}, twinkling like little ground stars. One by one, they landed safely on dew-kissed flower petals to rest their small wings until morning.`,
-                `Page 6: The Quiet River Stream.\n\nPassing near the river, ${h} listened to the bubbling water flowing gently over smooth stones. The rhythmic sound was so calming that ${h} felt their eyelids grow slightly heavy.`,
-                `Page 7: Sharing Warmth.\n\n${h} placed ${item} on a flat mossy rock so everyone in ${r} could feel its soothing warmth. Little rabbits and sleeping owls settled down happily nearby.`,
-                `Page 8: The Yawning Sky.\n\nThe moon climbed higher into the night sky, casting silver beams across ${r}. A grand yawn swept through the woods—from the highest tree branches down to the lowest burrows.`,
-                `Page 9: Pillow of Dreams.\n\nFeeling completely relaxed, ${h} found a cozy nest made of soft dry leaves and cottony moss. Wrapping up tight, ${h} let out a long, peaceful breath.`,
-                `Page 10: The Starlight Canopy.\n\nLooking up through the canopy, ${h} watched the constellation lights sway in rhythm with the universe. All worries of the day melted away into quiet peace.`,
-                `Page 11: Slow, Deep Breathing.\n\nIn... and out. In... and out. ${h}'s breathing matched the calm tide of the nocturnal forest. Everything was safe, warm, and protected under the night sky.`,
-                `Page 12: Goodnight ${r}.\n\nWith eyes fully closed, ${h} drifted into a realm of sweet, gentle dreams. Goodnight ${h}, goodnight ${r}, and goodnight to you. Sleep tight.`
+                `The sun was going down over ${r}. The sky turned soft pink and purple. It was time for bedtime.`,
+                `${h} walked slowly along the soft grass. All the little birds were closing their eyes in the trees.`,
+                `Along the path, ${h} found ${item}. It had a tiny, gentle light that looked warm and friendly.`,
+                `${h} picked up ${item} and smiled. "This will help everyone have happy dreams tonight," whispered ${h}.`,
+                `A calm, cool breeze blew through ${r}. It sang a quiet song: "Shh, shh, it is time to rest."`,
+                `The little fireflies danced around ${h}. One by one, they went to sleep under the big green leaves.`,
+                `Near the little river, the soft water went splash, splash, splash. It was a very soothing sound.`,
+                `${h} placed ${item} safely under the big Oak tree. All the forest friends gathered close to stay warm.`,
+                `The big bright moon peeked through the clouds. It looked like a night light for the whole world.`,
+                `${h} gave a big, slow yawn. ${h} climbed into a cozy bed made of soft dry leaves and warm moss.`,
+                `${h} closed both eyes and took a deep breath in... and a long breath out. Everything was quiet and safe.`,
+                `Goodnight ${r}. Goodnight sky. Goodnight ${h}. It is time to drift off into sweet, happy dreams.`
             ];
         }
 
@@ -429,9 +406,7 @@
 
         const pageText = document.getElementById('page-text');
         const pageContainer = document.getElementById('page-container');
-        const pageIndicator = document.getElementById('page-indicator');
-        const btnPrevPage = document.getElementById('btn-prev-page');
-        const btnNextPage = document.getElementById('btn-next-page');
+        const pageIndicatorTop = document.getElementById('page-indicator-top');
 
         const readerTopControls = document.getElementById('reader-top-controls');
         const readerBottomControls = document.getElementById('reader-bottom-controls');
@@ -462,7 +437,7 @@
             }).slice(0, 40);
 
             if (filtered.length === 0) {
-                storyGrid.innerHTML = `<div class="col-span-full py-12 text-center text-kindle-blue text-sm">No bedtime stories found matching your filter.</div>`;
+                storyGrid.innerHTML = `<div class="col-span-full py-12 text-center text-kindle-blue text-sm">No stories found.</div>`;
                 return;
             }
 
@@ -493,10 +468,6 @@
             currentState.currentPageIndex = 0;
             currentState.storyPages = generate12PageStory(story);
             currentState.uiControlsVisible = true;
-            
-            document.getElementById('reader-story-title').innerText = story.title;
-            document.getElementById('reader-story-age').innerText = `Age ${story.age}`;
-            document.getElementById('reader-story-duration').innerText = `${story.minutes} min`;
 
             updateBookmarkButtonUI();
             applyDisplaySettings();
@@ -507,7 +478,6 @@
             viewReader.classList.remove('hidden');
             currentState.currentView = 'reader';
 
-            // Request Fullscreen
             requestFullScreenMode();
             window.scrollTo(0, 0);
         }
@@ -536,10 +506,9 @@
             
             setTimeout(() => {
                 pageText.innerText = currentState.storyPages[currentState.currentPageIndex];
-                pageIndicator.innerText = `Page ${currentState.currentPageIndex + 1} of ${currentState.storyPages.length}`;
                 
-                btnPrevPage.disabled = currentState.currentPageIndex === 0;
-                btnNextPage.innerText = currentState.currentPageIndex === currentState.storyPages.length - 1 ? 'Finish' : 'Next';
+                // TOP MINIMAL PAGE INDICATOR
+                pageIndicatorTop.innerText = `${currentState.currentPageIndex + 1} / ${currentState.storyPages.length}`;
 
                 pageContainer.classList.remove('page-enter');
                 pageContainer.classList.add('page-active');
@@ -549,8 +518,6 @@
         function applyDisplaySettings() {
             pageText.style.fontSize = `${currentState.fontSize}px`;
             pageText.style.color = currentState.textColor;
-            
-            // Apply Font Family
             pageContainer.className = `w-full max-w-2xl transition-all duration-200 ${currentState.fontFamily}`;
             dimmerOverlay.style.opacity = currentState.dimmerOpacity / 100;
 
@@ -573,43 +540,33 @@
             }
         }
 
-        // TOUCH & SWIPE & DOUBLE-TAP GESTURE ENGINE
+        // TOUCH, TAP AND SWIPE GESTURE ENGINE
         function setupTouchAndGestureEngine() {
             let touchStartX = 0;
             let touchStartY = 0;
-            let touchEndX = 0;
-            let touchEndY = 0;
-            let lastTapTime = 0;
-            let holdTimer = null;
 
             readerTouchZone.addEventListener('touchstart', (e) => {
                 touchStartX = e.changedTouches[0].screenX;
                 touchStartY = e.changedTouches[0].screenY;
-
-                // Detect Tap and Hold (Press > 500ms)
-                holdTimer = setTimeout(() => {
-                    toggleUIControls();
-                }, 500);
             }, { passive: true });
 
             readerTouchZone.addEventListener('touchend', (e) => {
-                clearTimeout(holdTimer);
-                touchEndX = e.changedTouches[0].screenX;
-                touchEndY = e.changedTouches[0].screenY;
+                const touchEndX = e.changedTouches[0].screenX;
+                const touchEndY = e.changedTouches[0].screenY;
 
                 const diffX = touchEndX - touchStartX;
                 const diffY = touchEndY - touchStartY;
 
-                // Horizontal Swipe Detection (threshold: 40px)
-                if (Math.abs(diffX) > 40 && Math.abs(diffY) < 60) {
+                // Horizontal Swipe (threshold: 30px)
+                if (Math.abs(diffX) > 30 && Math.abs(diffY) < 60) {
                     if (diffX < 0) {
-                        // Swipe Left -> Next Page
                         if (currentState.currentPageIndex < currentState.storyPages.length - 1) {
                             currentState.currentPageIndex++;
                             renderPage();
+                        } else {
+                            exitReaderView();
                         }
                     } else {
-                        // Swipe Right -> Previous Page
                         if (currentState.currentPageIndex > 0) {
                             currentState.currentPageIndex--;
                             renderPage();
@@ -618,24 +575,33 @@
                     return;
                 }
 
-                // Detect Double Tap
-                const currentTime = new Date().getTime();
-                const tapLength = currentTime - lastTapTime;
-                if (tapLength < 300 && tapLength > 0) {
+                // Tap left/right third of screen to turn page, center to toggle UI
+                const screenWidth = window.innerWidth;
+                if (touchEndX < screenWidth * 0.3) {
+                    if (currentState.currentPageIndex > 0) {
+                        currentState.currentPageIndex--;
+                        renderPage();
+                    }
+                } else if (touchEndX > screenWidth * 0.7) {
+                    if (currentState.currentPageIndex < currentState.storyPages.length - 1) {
+                        currentState.currentPageIndex++;
+                        renderPage();
+                    } else {
+                        exitReaderView();
+                    }
+                } else {
                     toggleUIControls();
-                    e.preventDefault();
                 }
-                lastTapTime = currentTime;
             }, { passive: true });
         }
 
-        // WEB AUDIO ENGINE
+        // ROBUST WEB AUDIO SOUND ENGINE
         let audioCtx = null;
         let masterGain = null;
-        let activeNodes = [];
-        let melodyInterval = null;
+        let soundTimer = null;
+        let activeNoiseSource = null;
 
-        function unlockAudioContext() {
+        function initAudioEngine() {
             if (!audioCtx) {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
                 audioCtx = new AudioContext();
@@ -649,7 +615,7 @@
         }
 
         function playAmbientSound(type) {
-            unlockAudioContext();
+            initAudioEngine();
             stopAmbientSound();
 
             currentState.audioPlaying = true;
@@ -658,97 +624,94 @@
             document.getElementById('audio-status-text').innerText = "Playing";
 
             if (type === 'lullaby') {
-                const notes = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25];
-                let noteIdx = 0;
+                const freqList = [261.63, 329.63, 392.00, 523.25, 392.00, 329.63];
+                let step = 0;
 
-                melodyInterval = setInterval(() => {
-                    if (!currentState.audioPlaying || !audioCtx) return;
-                    const osc = audioCtx.createOscillator();
-                    const noteGain = audioCtx.createGain();
-                    
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(notes[noteIdx % notes.length], audioCtx.currentTime);
-                    noteIdx = (noteIdx + 1) % notes.length;
-
-                    noteGain.gain.setValueAtTime(0.001, audioCtx.currentTime);
-                    noteGain.gain.exponentialRampToValueAtTime(0.08, audioCtx.currentTime + 0.3);
-                    noteGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.5);
-
-                    osc.connect(noteGain);
-                    noteGain.connect(masterGain);
-                    
-                    osc.start();
-                    osc.stop(audioCtx.currentTime + 2.6);
-                }, 1200);
-
-            } else if (type === 'crickets') {
-                melodyInterval = setInterval(() => {
+                soundTimer = setInterval(() => {
                     if (!currentState.audioPlaying || !audioCtx) return;
                     const osc = audioCtx.createOscillator();
                     const gain = audioCtx.createGain();
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(4500, audioCtx.currentTime);
 
-                    gain.gain.setValueAtTime(0.01, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.03, audioCtx.currentTime + 0.05);
-                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+                    osc.type = 'sine';
+                    osc.frequency.value = freqList[step % freqList.length];
+                    step++;
+
+                    gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.1, audioCtx.currentTime + 0.2);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.8);
 
                     osc.connect(gain);
                     gain.connect(masterGain);
+
                     osc.start();
-                    osc.stop(audioCtx.currentTime + 0.16);
-                }, 800);
+                    osc.stop(audioCtx.currentTime + 1.9);
+                }, 1000);
+
+            } else if (type === 'crickets') {
+                soundTimer = setInterval(() => {
+                    if (!currentState.audioPlaying || !audioCtx) return;
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+
+                    osc.type = 'triangle';
+                    osc.frequency.value = 4200;
+
+                    gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.03, audioCtx.currentTime + 0.04);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
+
+                    osc.connect(gain);
+                    gain.connect(masterGain);
+
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.13);
+                }, 700);
 
             } else if (type === 'waves' || type === 'pinknoise') {
-                const bufferSize = audioCtx.sampleRate * 2;
+                const bufferSize = audioCtx.sampleRate * 3;
                 const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-                const output = buffer.getChannelData(0);
+                const data = buffer.getChannelData(0);
 
                 for (let i = 0; i < bufferSize; i++) {
-                    output[i] = Math.random() * 2 - 1;
+                    data[i] = Math.random() * 2 - 1;
                 }
 
-                const whiteNoise = audioCtx.createBufferSource();
-                whiteNoise.buffer = buffer;
-                whiteNoise.loop = true;
+                activeNoiseSource = audioCtx.createBufferSource();
+                activeNoiseSource.buffer = buffer;
+                activeNoiseSource.loop = true;
 
                 const filter = audioCtx.createBiquadFilter();
                 filter.type = type === 'waves' ? 'lowpass' : 'bandpass';
-                filter.frequency.setValueAtTime(type === 'waves' ? 300 : 800, audioCtx.currentTime);
+                filter.frequency.value = type === 'waves' ? 350 : 700;
 
                 const noiseGain = audioCtx.createGain();
-                noiseGain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                noiseGain.gain.value = 0.1;
 
-                whiteNoise.connect(filter);
+                activeNoiseSource.connect(filter);
                 filter.connect(noiseGain);
                 noiseGain.connect(masterGain);
 
-                whiteNoise.start();
-                activeNodes.push(whiteNoise);
+                activeNoiseSource.start();
             }
         }
 
         function stopAmbientSound() {
-            if (melodyInterval) clearInterval(melodyInterval);
-            activeNodes.forEach(node => {
-                try { node.stop(); } catch(e){}
-            });
-            activeNodes = [];
+            if (soundTimer) clearInterval(soundTimer);
+            if (activeNoiseSource) {
+                try { activeNoiseSource.stop(); } catch(e){}
+                activeNoiseSource = null;
+            }
             currentState.audioPlaying = false;
             document.getElementById('audio-icon').className = "fa-solid fa-volume-xmark text-gray-500";
             document.getElementById('audio-status-text').innerText = "Sound Off";
         }
 
         function setupEventListeners() {
-            document.body.addEventListener('click', unlockAudioContext, { once: true });
+            document.body.addEventListener('touchstart', initAudioEngine, { once: true });
+            document.body.addEventListener('click', initAudioEngine, { once: true });
 
-            btnDashboard.onclick = () => {
-                exitReaderView();
-            };
-
-            btnExitReader.onclick = () => {
-                exitReaderView();
-            };
+            btnDashboard.onclick = exitReaderView;
+            btnExitReader.onclick = exitReaderView;
 
             searchInput.oninput = (e) => {
                 currentState.searchQuery = e.target.value;
@@ -765,22 +728,6 @@
                     renderStoryGrid();
                 };
             });
-
-            btnPrevPage.onclick = () => {
-                if (currentState.currentPageIndex > 0) {
-                    currentState.currentPageIndex--;
-                    renderPage();
-                }
-            };
-
-            btnNextPage.onclick = () => {
-                if (currentState.currentPageIndex < currentState.storyPages.length - 1) {
-                    currentState.currentPageIndex++;
-                    renderPage();
-                } else {
-                    exitReaderView();
-                }
-            };
 
             btnSettings.onclick = () => modalSettings.classList.remove('hidden');
             btnReaderSettings.onclick = () => modalSettings.classList.remove('hidden');
