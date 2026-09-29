@@ -121,855 +121,627 @@
             </div>
         </header>
 
+        <!-- DASHBOARD VIEW -->
         <main id="view-dashboard" class="flex-1 py-6 flex flex-col gap-6 z-20">
             <div class="flex flex-col sm:flex-row gap-3 items-center justify-between">
                 <div class="relative w-full sm:w-2/3">
                     <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-xs text-gray-500"></i>
                     <input type="text" id="search-input" placeholder="Search bedtime tales, animals, magic..." 
-                        class="w-full pl-10 pr-4 py-2.5 bg-kindle-surface border border-kindle-border rounded-xl text-sm text-kindle-cream focus:outline-none focus:border-kindle-amber/60 placeholder-gray-600">
+                        class="w-full pl-10 pr-4 py-2.5 bg-kindle-surface border border-kindle-border rounded-xl text-sm text-kindle-cream focus:outline-none focus:border-kindle-amber transition">
                 </div>
-                
-                <button id="btn-random-story" class="w-full sm:w-auto px-4 py-2.5 bg-gradient-to-r from-amber-950/60 to-amber-900/40 border border-amber-800/40 text-amber-200 hover:border-amber-600/60 rounded-xl text-sm font-sans flex items-center justify-center gap-2 transition active:scale-95">
-                    <i class="fa-solid fa-wand-magic-sparkles text-kindle-amber"></i> Tell Me a Surprise Story
-                </button>
+                <div class="flex items-center gap-2 text-xs text-kindle-blue">
+                    <i class="fa-solid fa-layer-group"></i> <span>1000+ Bedtime Tales</span>
+                </div>
             </div>
 
-            <!-- Age Filter Pills -->
+            <!-- AGE GROUP FILTERS -->
             <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none text-xs">
-                <span class="text-gray-500 pr-1 font-sans uppercase text-[10px] tracking-wider">Age:</span>
-                <button class="age-filter-btn px-3 py-1.5 rounded-lg bg-kindle-amber text-black font-semibold" data-age="all">All Ages</button>
-                <button class="age-filter-btn px-3 py-1.5 rounded-lg bg-kindle-surface border border-kindle-border text-kindle-cream hover:border-kindle-amber/40" data-age="0-2">0 - 2 yrs</button>
-                <button class="age-filter-btn px-3 py-1.5 rounded-lg bg-kindle-surface border border-kindle-border text-kindle-cream hover:border-kindle-amber/40" data-age="2+">2+ yrs</button>
-                <button class="age-filter-btn px-3 py-1.5 rounded-lg bg-kindle-surface border border-kindle-border text-kindle-cream hover:border-kindle-amber/40" data-age="3+">3+ yrs</button>
-                <button class="age-filter-btn px-3 py-1.5 rounded-lg bg-kindle-surface border border-kindle-border text-kindle-cream hover:border-kindle-amber/40" data-age="4+">4+ yrs</button>
-                <button class="age-filter-btn px-3 py-1.5 rounded-lg bg-kindle-surface border border-kindle-border text-kindle-cream hover:border-kindle-amber/40" data-age="5+">5+ yrs</button>
-                <button class="age-filter-btn px-3 py-1.5 rounded-lg bg-kindle-surface border border-kindle-border text-kindle-cream hover:border-kindle-amber/40" data-age="6+">6+ yrs</button>
-                <button class="age-filter-btn px-3 py-1.5 rounded-lg bg-kindle-surface border border-kindle-border text-kindle-cream hover:border-kindle-amber/40" data-age="7+">7+ yrs</button>
+                <button class="age-filter-btn active px-3.5 py-1.5 rounded-full bg-kindle-amber text-black font-semibold" data-age="all">All Ages</button>
+                <button class="age-filter-btn px-3.5 py-1.5 rounded-full bg-kindle-surface border border-kindle-border text-kindle-cream hover:border-kindle-amber" data-age="0-2">0-2 yrs</button>
+                <button class="age-filter-btn px-3.5 py-1.5 rounded-full bg-kindle-surface border border-kindle-border text-kindle-cream hover:border-kindle-amber" data-age="2+">2+ yrs</button>
+                <button class="age-filter-btn px-3.5 py-1.5 rounded-full bg-kindle-surface border border-kindle-border text-kindle-cream hover:border-kindle-amber" data-age="3+">3+ yrs</button>
+                <button class="age-filter-btn px-3.5 py-1.5 rounded-full bg-kindle-surface border border-kindle-border text-kindle-cream hover:border-kindle-amber" data-age="4+">4+ yrs</button>
+                <button class="age-filter-btn px-3.5 py-1.5 rounded-full bg-kindle-surface border border-kindle-border text-kindle-cream hover:border-kindle-amber" data-age="5+">5+ yrs</button>
+                <button class="age-filter-btn px-3.5 py-1.5 rounded-full bg-kindle-surface border border-kindle-border text-kindle-cream hover:border-kindle-amber" data-age="6+">6+ yrs</button>
+                <button class="age-filter-btn px-3.5 py-1.5 rounded-full bg-kindle-surface border border-kindle-border text-kindle-cream hover:border-kindle-amber" data-age="7+">7+ yrs</button>
             </div>
 
-            <div class="flex justify-between items-center text-xs text-gray-500 font-sans border-b border-kindle-border/40 pb-2">
-                <span>Showing <strong id="story-count" class="text-kindle-cream">0</strong> bedtime stories (10+ Pages Each)</span>
-                <button id="btn-show-saved" class="text-kindle-amber/80 hover:underline flex items-center gap-1">
-                    <i class="fa-solid fa-heart text-amber-600"></i> Bookmarks (<span id="bookmark-count">0</span>)
-                </button>
+            <!-- STORY GRID -->
+            <div id="story-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- Stories populated via JS -->
             </div>
-
-            <!-- Story Grid -->
-            <div id="story-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
         </main>
 
-        <main id="view-reader" class="hidden flex-1 py-8 flex flex-col justify-between z-20">
-            <div class="text-center mb-6 opacity-80">
-                <span id="reader-age-badge" class="text-[11px] font-sans px-2.5 py-0.5 rounded-full border border-kindle-border text-gray-400">Age 3+</span>
-                <h2 id="reader-title" class="text-2xl sm:text-3xl font-display font-medium text-kindle-amber mt-2">Story Title</h2>
-                <p id="reader-origin" class="text-xs italic text-gray-500 mt-1">Classic Folklore</p>
+        <!-- READER VIEW -->
+        <main id="view-reader" class="hidden flex-1 py-6 flex flex-col justify-between z-20">
+            <div id="reader-title-area" class="mb-4 text-center border-b border-kindle-border/40 pb-3">
+                <h2 id="reader-story-title" class="text-xl sm:text-2xl font-display text-kindle-amber">Story Title</h2>
+                <div class="flex items-center justify-center gap-3 text-xs text-kindle-blue mt-1">
+                    <span id="reader-story-age">Age 4+</span> • 
+                    <span id="reader-story-duration">8 min read</span> • 
+                    <span>12 Pages</span>
+                </div>
             </div>
 
-            <!-- Reading Canvas Box -->
-            <div class="flex-1 flex items-center justify-center my-auto min-h-[360px] px-3 sm:px-8">
-                <article id="reader-text" class="page-content page-active w-full text-justify leading-relaxed tracking-wide transition-all">
-                    <!-- Page text content inserted here -->
-                </article>
+            <!-- READING PAGE DISPLAY -->
+            <div class="flex-1 flex items-center justify-center py-4">
+                <div id="page-container" class="w-full max-w-2xl leading-relaxed font-serif text-kindle-cream transition-all duration-300">
+                    <p id="page-text" class="text-lg">Page text here...</p>
+                </div>
             </div>
 
-            <!-- Footer Navigation Controls -->
-            <footer class="mt-8 pt-4 border-t border-kindle-border/40 flex items-center justify-between font-sans text-sm">
-                <button id="btn-prev-page" class="px-4 py-2 rounded-lg bg-kindle-surface border border-kindle-border hover:bg-kindle-border/50 text-kindle-cream disabled:opacity-30 disabled:pointer-events-none transition flex items-center gap-2">
-                    <i class="fa-solid fa-chevron-left text-xs"></i> Prev
+            <!-- PAGE NAVIGATION -->
+            <div class="pt-4 border-t border-kindle-border/40 flex items-center justify-between">
+                <button id="btn-prev-page" class="px-4 py-2 rounded-lg bg-kindle-surface border border-kindle-border text-kindle-cream hover:border-kindle-amber disabled:opacity-30 disabled:pointer-events-none transition flex items-center gap-2 text-sm">
+                    <i class="fa-solid fa-chevron-left"></i> Previous
                 </button>
+                
+                <span id="page-indicator" class="text-xs text-kindle-blue font-sans">Page 1 of 12</span>
 
-                <div class="text-center text-xs text-gray-500">
-                    <span id="page-indicator" class="text-kindle-cream font-medium">Page 1 of 12</span>
-                    <div id="read-progress-bar" class="w-28 h-1.5 bg-kindle-surface rounded-full mt-1.5 mx-auto overflow-hidden border border-kindle-border/60">
-                        <div id="read-progress-fill" class="h-full bg-kindle-amber transition-all duration-300" style="width: 8%;"></div>
+                <button id="btn-next-page" class="px-4 py-2 rounded-lg bg-kindle-surface border border-kindle-border text-kindle-amber border-kindle-amber/40 hover:bg-kindle-amber hover:text-black transition flex items-center gap-2 text-sm">
+                    Next <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </main>
+
+        <!-- DISPLAY SETTINGS PANEL MODAL -->
+        <div id="modal-settings" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-40 flex items-center justify-center p-4">
+            <div class="bg-kindle-surface border border-kindle-border p-6 rounded-2xl w-full max-w-md flex flex-col gap-5 text-sm">
+                <div class="flex items-center justify-between border-b border-kindle-border pb-3">
+                    <h3 class="font-display text-kindle-amber text-lg"><i class="fa-solid fa-sliders mr-2"></i> Reading Display</h3>
+                    <button id="btn-close-settings" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+
+                <!-- Font Size -->
+                <div class="flex flex-col gap-2">
+                    <div class="flex justify-between text-xs text-kindle-cream">
+                        <span>Font Size</span>
+                        <span id="label-font-size">20px</span>
+                    </div>
+                    <input type="range" id="slider-font-size" min="14" max="32" value="20" class="w-full">
+                </div>
+
+                <!-- Backlight Brightness Dimmer -->
+                <div class="flex flex-col gap-2">
+                    <div class="flex justify-between text-xs text-kindle-cream">
+                        <span>Backlight Warmth / Dimmer</span>
+                        <span id="label-dimmer">0%</span>
+                    </div>
+                    <input type="range" id="slider-dimmer" min="0" max="80" value="0" class="w-full">
+                </div>
+
+                <!-- Text Tone Color -->
+                <div class="flex flex-col gap-2">
+                    <span class="text-xs text-kindle-cream">Text Color Tone</span>
+                    <div class="grid grid-cols-4 gap-2">
+                        <button class="tone-btn active p-2 rounded-lg border border-kindle-amber bg-[#0B0D0E] text-[#E8C587] text-xs" data-color="#E8C587">Amber</button>
+                        <button class="tone-btn p-2 rounded-lg border border-kindle-border bg-[#0B0D0E] text-[#DCD6CD] text-xs" data-color="#DCD6CD">Cream</button>
+                        <button class="tone-btn p-2 rounded-lg border border-kindle-border bg-[#0B0D0E] text-[#A8927A] text-xs" data-color="#A8927A">Sepia</button>
+                        <button class="tone-btn p-2 rounded-lg border border-kindle-border bg-[#0B0D0E] text-[#8A9BA8] text-xs" data-color="#8A9BA8">Night Blue</button>
                     </div>
                 </div>
 
-                <button id="btn-next-page" class="px-4 py-2 rounded-lg bg-kindle-surface border border-kindle-border hover:bg-kindle-border/50 text-kindle-cream disabled:opacity-30 disabled:pointer-events-none transition flex items-center gap-2">
-                    Next <i class="fa-solid fa-chevron-right text-xs"></i>
-                </button>
-            </footer>
-        </main>
-
-    </div>
-
-    <!-- SETTINGS MODAL -->
-    <div id="modal-settings" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 hidden flex items-center justify-center p-4">
-        <div class="bg-kindle-surface border border-kindle-border rounded-2xl max-w-md w-full p-6 text-kindle-cream shadow-2xl relative">
-            <button id="close-settings" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            
-            <h3 class="text-lg font-display text-kindle-amber mb-5 flex items-center gap-2">
-                <i class="fa-solid fa-sliders text-sm"></i> Reading & Screen Controls
-            </h3>
-
-            <div class="mb-5">
-                <label class="block text-xs uppercase tracking-wider text-gray-400 mb-2 font-sans">Font Style</label>
-                <div class="grid grid-cols-3 gap-2 text-xs font-sans">
-                    <button class="font-option-btn p-2.5 rounded-lg border border-kindle-amber text-kindle-amber bg-amber-950/20 font-serif" data-font="font-serif">Merriweather</button>
-                    <button class="font-option-btn p-2.5 rounded-lg border border-kindle-border text-gray-400 hover:border-gray-500 font-sans" data-font="font-sans">Nunito Soft</button>
-                    <button class="font-option-btn p-2.5 rounded-lg border border-kindle-border text-gray-400 hover:border-gray-500 font-readable" data-font="font-readable">Lexend Clean</button>
-                </div>
-            </div>
-
-            <div class="mb-5">
-                <div class="flex justify-between text-xs text-gray-400 mb-1 font-sans">
-                    <span>Text Size</span>
-                    <span id="font-size-val">20px</span>
-                </div>
-                <input type="range" id="font-size-slider" min="16" max="32" value="20" class="w-full h-1.5 bg-kindle-border rounded-lg appearance-none cursor-pointer">
-            </div>
-
-            <div class="mb-5">
-                <label class="block text-xs uppercase tracking-wider text-gray-400 mb-2 font-sans">Text Tone (Low Glare)</label>
-                <div class="grid grid-cols-4 gap-2 text-xs font-sans text-center">
-                    <button class="color-option-btn p-2 rounded-lg border border-kindle-amber bg-black text-kindle-amber" data-color="#E8C587">Amber</button>
-                    <button class="color-option-btn p-2 rounded-lg border border-kindle-border bg-black text-kindle-cream" data-color="#DCD6CD">Cream</button>
-                    <button class="color-option-btn p-2 rounded-lg border border-kindle-border bg-black text-kindle-sepia" data-color="#A8927A">Sepia</button>
-                    <button class="color-option-btn p-2 rounded-lg border border-kindle-border bg-black text-kindle-blue" data-color="#8A9BA8">Night Blue</button>
-                </div>
-            </div>
-
-            <div class="mb-2">
-                <div class="flex justify-between text-xs text-gray-400 mb-1 font-sans">
-                    <span>Night Dimmer (Backlight Filter)</span>
-                    <span id="dimmer-val">0%</span>
-                </div>
-                <input type="range" id="dimmer-slider" min="0" max="80" value="0" class="w-full h-1.5 bg-kindle-border rounded-lg appearance-none cursor-pointer">
-                <p class="text-[11px] text-gray-500 mt-1 font-sans">Darkens the overall display for pitch-black rooms.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- AUDIO SOUNDSCAPE MODAL -->
-    <div id="modal-audio" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 hidden flex items-center justify-center p-4">
-        <div class="bg-kindle-surface border border-kindle-border rounded-2xl max-w-md w-full p-6 text-kindle-cream shadow-2xl relative">
-            <button id="close-audio" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            
-            <h3 class="text-lg font-display text-kindle-amber mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-moon text-sm"></i> Sleep Soundscapes (Synthesized)
-            </h3>
-
-            <div class="grid grid-cols-2 gap-3 mb-5 font-sans text-xs">
-                <button class="sound-track-btn p-3 rounded-xl border border-kindle-amber bg-amber-950/20 text-kindle-amber flex items-center gap-2" data-sound="lullaby">
-                    <i class="fa-solid fa-music"></i> Soft Lullaby Chimes
-                </button>
-                <button class="sound-track-btn p-3 rounded-xl border border-kindle-border text-gray-400 hover:border-gray-500 flex items-center gap-2" data-sound="waves">
-                    <i class="fa-solid fa-water"></i> Ocean Sleep Waves
-                </button>
-                <button class="sound-track-btn p-3 rounded-xl border border-kindle-border text-gray-400 hover:border-gray-500 flex items-center gap-2" data-sound="crickets">
-                    <i class="fa-solid fa-bugs"></i> Night Crickets
-                </button>
-                <button class="sound-track-btn p-3 rounded-xl border border-kindle-border text-gray-400 hover:border-gray-500 flex items-center gap-2" data-sound="whitenoise">
-                    <i class="fa-solid fa-wind"></i> Warm Pink Noise
-                </button>
-            </div>
-
-            <div class="mb-5 font-sans">
-                <div class="flex justify-between text-xs text-gray-400 mb-1">
-                    <span>Master Volume</span>
-                    <span id="audio-vol-val">40%</span>
-                </div>
-                <input type="range" id="audio-vol-slider" min="0" max="100" value="40" class="w-full h-1.5 bg-kindle-border rounded-lg appearance-none cursor-pointer">
-            </div>
-
-            <div class="font-sans">
-                <label class="block text-xs uppercase tracking-wider text-gray-400 mb-2">Auto-Off Sleep Timer</label>
-                <div class="grid grid-cols-4 gap-2 text-xs text-center">
-                    <button class="timer-btn p-2 rounded-lg border border-kindle-border text-gray-400 hover:border-gray-500" data-time="0">Off</button>
-                    <button class="timer-btn p-2 rounded-lg border border-kindle-border text-gray-400 hover:border-gray-500" data-time="5">5 Min</button>
-                    <button class="timer-btn p-2 rounded-lg border border-kindle-amber bg-amber-950/20 text-kindle-amber" data-time="15">15 Min</button>
-                    <button class="timer-btn p-2 rounded-lg border border-kindle-border text-gray-400 hover:border-gray-500" data-time="30">30 Min</button>
+                <!-- Font Family -->
+                <div class="flex flex-col gap-2">
+                    <span class="text-xs text-kindle-cream">Font Style</span>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button class="font-family-btn active p-2 rounded-lg border border-kindle-amber bg-kindle-bg text-xs font-serif" data-font="font-serif">Merriweather</button>
+                        <button class="font-family-btn p-2 rounded-lg border border-kindle-border bg-kindle-bg text-xs font-sans" data-font="font-sans">Nunito</button>
+                        <button class="font-family-btn p-2 rounded-lg border border-kindle-border bg-kindle-bg text-xs font-readable" data-font="font-readable">Lexend</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- SUBSCRIPTION PAYWALL MODAL -->
-    <div id="modal-paywall" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-kindle-surface border border-amber-800/40 rounded-2xl max-w-sm w-full p-6 text-kindle-cream shadow-2xl relative text-center">
-            <div class="w-12 h-12 rounded-full bg-amber-950/60 border border-amber-600/40 text-kindle-amber flex items-center justify-center mx-auto mb-3 text-xl">
-                <i class="fa-solid fa-star"></i>
-            </div>
+        <!-- AMBIENT AUDIO CONTROL MODAL -->
+        <div id="modal-audio" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-40 flex items-center justify-center p-4">
+            <div class="bg-kindle-surface border border-kindle-border p-6 rounded-2xl w-full max-w-md flex flex-col gap-5 text-sm">
+                <div class="flex items-center justify-between border-b border-kindle-border pb-3">
+                    <h3 class="font-display text-kindle-amber text-lg"><i class="fa-solid fa-music mr-2"></i> Sleep Audio Sounds</h3>
+                    <button id="btn-close-audio" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
 
-            <h3 class="text-xl font-display text-amber-200 mb-1">Unlock Unlimited 10+ Page Tales</h3>
-            <p class="text-xs text-gray-400 font-sans mb-4">Your 7-day free trial has concluded. Subscribe to continue endless magical bedtime moments.</p>
+                <!-- Sound Selection -->
+                <div class="grid grid-cols-2 gap-3">
+                    <button class="sound-track-btn p-3 rounded-xl border border-kindle-border bg-kindle-bg hover:border-kindle-amber flex items-center gap-3 text-left" data-track="lullaby">
+                        <i class="fa-solid fa-moon text-kindle-amber text-base"></i>
+                        <div>
+                            <p class="font-medium text-kindle-cream text-xs">Soft Lullaby</p>
+                            <p class="text-[10px] text-kindle-blue">Synthesized Melody</p>
+                        </div>
+                    </button>
+                    <button class="sound-track-btn p-3 rounded-xl border border-kindle-border bg-kindle-bg hover:border-kindle-amber flex items-center gap-3 text-left" data-track="waves">
+                        <i class="fa-solid fa-water text-blue-400 text-base"></i>
+                        <div>
+                            <p class="font-medium text-kindle-cream text-xs">Ocean Waves</p>
+                            <p class="text-[10px] text-kindle-blue">Gentle Tides</p>
+                        </div>
+                    </button>
+                    <button class="sound-track-btn p-3 rounded-xl border border-kindle-border bg-kindle-bg hover:border-kindle-amber flex items-center gap-3 text-left" data-track="crickets">
+                        <i class="fa-solid fa-bugs text-emerald-400 text-base"></i>
+                        <div>
+                            <p class="font-medium text-kindle-cream text-xs">Night Crickets</p>
+                            <p class="text-[10px] text-kindle-blue">Calm Woods</p>
+                        </div>
+                    </button>
+                    <button class="sound-track-btn p-3 rounded-xl border border-kindle-border bg-kindle-bg hover:border-kindle-amber flex items-center gap-3 text-left" data-track="pinknoise">
+                        <i class="fa-solid fa-wind text-purple-400 text-base"></i>
+                        <div>
+                            <p class="font-medium text-kindle-cream text-xs">Pink Noise</p>
+                            <p class="text-[10px] text-kindle-blue">Sleep Freq</p>
+                        </div>
+                    </button>
+                </div>
 
-            <div class="bg-black/60 border border-kindle-border p-4 rounded-xl mb-5 font-sans">
-                <span class="text-2xl font-bold text-kindle-amber">₹29</span>
-                <span class="text-xs text-gray-400"> / month</span>
-                <ul class="text-left text-xs text-gray-300 mt-3 space-y-1.5 border-t border-kindle-border/60 pt-3">
-                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400 text-[10px]"></i> Access 1000+ Multi-Page Bedtime Stories</li>
-                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400 text-[10px]"></i> Synthesized Calming Soundscapes</li>
-                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400 text-[10px]"></i> Low-Glare Kindle Night Mode</li>
-                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400 text-[10px]"></i> Cancel anytime instantly</li>
-                </ul>
-            </div>
+                <!-- Sleep Timer -->
+                <div class="flex flex-col gap-2">
+                    <span class="text-xs text-kindle-cream">Auto Sleep Timer</span>
+                    <div class="grid grid-cols-4 gap-2 text-xs">
+                        <button class="timer-btn active p-2 rounded-lg border border-kindle-amber bg-kindle-bg text-kindle-amber" data-timer="off">Off</button>
+                        <button class="timer-btn p-2 rounded-lg border border-kindle-border bg-kindle-bg text-kindle-cream" data-timer="5">5 Min</button>
+                        <button class="timer-btn p-2 rounded-lg border border-kindle-border bg-kindle-bg text-kindle-cream" data-timer="15">15 Min</button>
+                        <button class="timer-btn p-2 rounded-lg border border-kindle-border bg-kindle-bg text-kindle-cream" data-timer="30">30 Min</button>
+                    </div>
+                </div>
 
-            <button id="btn-subscribe-now" class="w-full py-3 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-black font-semibold rounded-xl font-sans text-sm shadow-lg transition active:scale-95">
-                Subscribe for ₹29/month
-            </button>
-            <button id="btn-close-paywall" class="mt-3 text-xs text-gray-500 hover:text-gray-300 font-sans">
-                Close preview
-            </button>
-        </div>
-    </div>
-
-    <!-- PAYMENT GATEWAY DEMO MODAL -->
-    <div id="modal-payment-demo" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-kindle-surface border border-kindle-border rounded-2xl max-w-xs w-full p-5 text-kindle-cream font-sans text-xs">
-            <div class="flex justify-between items-center mb-4 border-b border-kindle-border pb-2">
-                <span class="font-semibold text-kindle-amber">Nocturne Payments</span>
-                <span class="text-[10px] bg-green-950 text-green-300 px-2 py-0.5 rounded border border-green-800">Secure UPI</span>
-            </div>
-            
-            <p class="mb-3 text-gray-300">Simulating In-App Purchase for <strong>₹29.00</strong></p>
-            
-            <div class="space-y-2 mb-4">
-                <button class="sim-pay-btn w-full p-2.5 rounded-lg border border-kindle-border hover:border-amber-500/50 bg-black text-left flex items-center justify-between">
-                    <span>GPay / PhonePe / Paytm</span>
-                    <i class="fa-solid fa-qrcode text-amber-400"></i>
+                <button id="btn-stop-audio" class="w-full py-2.5 rounded-xl bg-red-950/60 border border-red-800/50 text-red-200 text-xs font-semibold hover:bg-red-900/60 transition">
+                    Turn Off Audio
                 </button>
-                <button class="sim-pay-btn w-full p-2.5 rounded-lg border border-kindle-border hover:border-amber-500/50 bg-black text-left flex items-center justify-between">
-                    <span>Credit / Debit Card</span>
-                    <i class="fa-regular fa-credit-card text-blue-400"></i>
-                </button>
             </div>
-
-            <button id="btn-complete-payment" class="w-full py-2.5 bg-green-600 hover:bg-green-500 text-white font-semibold rounded-lg text-center transition">
-                Simulate Successful Payment
-            </button>
         </div>
+
+        <!-- PAYWALL SUBSCRIPTION MODAL -->
+        <div id="modal-paywall" class="hidden fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4">
+            <div class="bg-kindle-surface border border-kindle-amber/40 p-6 rounded-2xl w-full max-w-sm text-center flex flex-col gap-5">
+                <div class="w-12 h-12 rounded-full bg-amber-950/80 border border-amber-500/30 text-kindle-amber flex items-center justify-center mx-auto text-xl">
+                    <i class="fa-solid fa-crown"></i>
+                </div>
+                <div>
+                    <h3 class="font-display text-xl text-kindle-amber">7-Day Free Trial Ended</h3>
+                    <p class="text-xs text-kindle-blue mt-1">Unlock full access to 1000+ Bedtime Stories for your child.</p>
+                </div>
+
+                <div class="bg-kindle-bg p-4 rounded-xl border border-kindle-border flex flex-col gap-1">
+                    <span class="text-2xl font-bold text-kindle-cream">₹29 <span class="text-xs font-normal text-kindle-blue">/ month</span></span>
+                    <span class="text-[10px] text-emerald-400">Cancel anytime • Ad-free nighttime reading</span>
+                </div>
+
+                <button id="btn-subscribe" class="w-full py-3 rounded-xl bg-kindle-amber text-black font-semibold text-sm hover:bg-amber-400 transition shadow-lg shadow-amber-950/50">
+                    Subscribe for ₹29/Month
+                </button>
+                <button id="btn-close-paywall" class="text-xs text-kindle-blue underline">Continue Trial Preview</button>
+            </div>
+        </div>
+
     </div>
 
+    <!-- JAVASCRIPT APP LOGIC -->
     <script>
-        /* Multi-Page Rich Bedtime Story Database (10+ pages each) */
-        const STORY_DATABASE = [
-            {
-                id: "s1",
-                title: "The Star That Couldn't Shine Bright",
-                age: "0-2",
-                origin: "Modern Bedtime Legend",
-                favorite: false,
-                content: [
-                    "High up in the velvet night sky, lived a little star named Pip. Pip was the softest star in the entire sky, nestled comfortably beside mother moon.",
-                    "While bigger stars shone like diamond lanterns, Pip emitted a warm, cozy amber glow—just bright enough to light up a sleepy caterpillar's nest.",
-                    "Every evening, Pip looked down at the dark forest below. The tall pine trees swayed gently, whispering sweet lullabies to the nocturnal breeze.",
-                    "Pip wondered if a small glow was enough. 'I am not as big as Sirius or as dazzling as Venus,' Pip sighed softly into the starry mist.",
-                    "A wise old barn owl with soft grey feathers swooped through the quiet air and rested on a silver cloud right beside Pip.",
-                    "'Little star,' whispered the owl gently. 'The bright stars light up the sky, but your soft amber glow brings calm and quiet to those who are weary.'",
-                    "The owl pointed his feather towards a tiny cozy rabbit burrow down in the velvet moss. Inside, three tiny baby bunnies were trying to sleep.",
-                    "The bright stars made too many shadows, but Pip's gentle amber light wrapped around their burrow like a soft knitted wool blanket.",
-                    "The little bunnies rested their soft ears down, took three slow, deep breaths, and closed their sleepy eyes with happy hearts.",
-                    "Pip smiled gently, feeling a warm surge of joy deep inside. Being soft and calm was a magical gift indeed.",
-                    "Pip tucked its golden points in, dimmed its flickering glow to a quiet nightlight, and let out a tiny starry sigh.",
-                    "Goodnight brave little forest, goodnight sweet sleeping bunnies, and goodnight Pip. Deep, peaceful dreams awaited everyone."
-                ]
-            },
-            {
-                id: "s2",
-                title: "Barnaby Bear's Quest for the Great Yawn",
-                age: "2+",
-                origin: "Forest Folk Legend",
-                favorite: false,
-                content: [
-                    "Deep inside the Whispering Oak Valley lived Barnaby, a brown bear cub with very soft fur and two round fuzzy ears.",
-                    "It was bedtime across the forest, but Barnaby sat in his mossy hollow feeling wide awake. 'I seem to have misplaced my bedtime yawn,' he mumbled.",
-                    "He padded softly outside on his furry paws. The cool night grass felt gentle against his toes, wet with fresh evening dew.",
-                    "He visited Mother Badger near the sleepy stream. 'Mother Badger, have you seen my big bedtime yawn?' asked Barnaby softly.",
-                    "'No, little Barnaby,' hummed Mother Badger as she tucked her cubs into bed. 'Try listening to the rhythmic splash of the creek.'",
-                    "Barnaby sat by the riverbank. 'Splash, ripple, hush... splash, ripple, hush,' sang the cool blue waters under the pale moon.",
-                    "He walked further along the path and met the Friendly Hedgehog family, who were snuggled in a warm mound of dry autumn leaves.",
-                    "'Close your eyes and breathe in the scent of pine and wild lavender,' suggested the Papa Hedgehog with a quiet smile.",
-                    "Barnaby closed his eyes. He inhaled slowly... 1, 2, 3... smelling the rich earthy wood and sweet night blossom.",
-                    "He exhaled slowly... 1, 2, 3... feeling his shoulders drop and his heavy eyelids grow deliciously soft and warm.",
-                    "And right then and there, deep from inside his sleepy bear tummy, came a huge, cozy, stretch-your-paws bear yawn!",
-                    "Barnaby smiled warmly, padded back into his snug mossy hollow, pulled his fleece blanket up to his chin, and drifted into deep sleep."
-                ]
-            },
-            {
-                id: "s3",
-                title: "Oliver Owl and the Moonlit Symphony",
-                age: "3+",
-                origin: "Enchanted Woodland Tale",
-                favorite: false,
-                content: [
-                    "In the tallest weeping willow tree lived Oliver, a young owl with large, gentle golden eyes and silvery white feathers.",
-                    "Tonight was the night of the Great Moonlit Symphony, when all the quiet soundmakers of the forest gathered to play bedtime music.",
-                    "Oliver flapped his wings without making a sound and landed softly on a high birch branch overlooking Silver Lake.",
-                    "First, the field crickets bowed politely and played their soothing melody: 'Chirp-shhh, chirp-shhh, chirp-shhh.'",
-                    "Next, the gentle evening breeze blew through the tall rushes by the shore: 'Whooosh, whisper, whooosh, whisper.'",
-                    "Then, tiny raindrops began to tap lightly on broad lily pads: 'Pitter-patter, drip-drop, pitter-patter, drip-drop.'",
-                    "Oliver listened closely. Every instrument was gentle, soft, and relaxed, harmonizing perfectly under the silvery moonlight.",
-                    "The forest animals gathered along the lakebank—foxes, deer, mice, and dormice—all resting their chins on their front paws.",
-                    "Oliver added his softest vocal note: 'Hoo-ooo... hoo-ooo...' blending into the symphony like a warm velvet ribbon.",
-                    "One by one, the woodland creatures closed their eyes, their breathing matching the slow, gentle rhythm of the music.",
-                    "The symphony grew quieter and quieter until it became a delicate hush across the tranquil valley.",
-                    "Oliver tucked his beak into his chest feathers, closed his golden eyes, and let the quiet night cradle him in peace."
-                ]
-            }
+        // CORE STORIES DATABASE GENERATOR (1000+ SIMULATED STORIES)
+        const BASE_STORIES = [
+            { id: 1, title: "The Sleepy Little Star", age: "0-2", minutes: 5, category: "Space", summary: "A tiny blue star finds its pillow of fluffy night clouds." },
+            { id: 2, title: "Whispering Willow's Blanket", age: "2+", minutes: 6, category: "Nature", summary: "How the gentle tree tucked all forest creatures into sleep." },
+            { id: 3, title: "Barnaby Bear's Yawn", age: "3+", minutes: 8, category: "Animals", summary: "A bear who taught the forest how to yawn under moonlight." },
+            { id: 4, title: "The Moon Boat Voyage", age: "4+", minutes: 10, category: "Fantasy", summary: "Sailing across silver skies in a boat woven from stardust." },
+            { id: 5, title: "Oliver Owl's Night Song", age: "5+", minutes: 9, category: "Bedtime", summary: "A quiet owl lullaby that calms the roaring river." },
+            { id: 6, title: "The Dragon Who Wanted Soft Pillows", age: "6+", minutes: 12, category: "Magic", summary: "A gentle dragon searching for cloud fluff across mountains." },
+            { id: 7, title: "The Clockmaker of Dreamland", age: "7+", minutes: 14, category: "Adventure", summary: "Fixing the ticking clocks of night to usher peaceful dreams." }
         ];
 
-        /* Generator for 1000+ procedural stories with 10+ pages each */
-        const PROTAGONISTS = ["Little Elephant", "The Golden Bunny", "A Sleepy Dragon", "The Tiny Firefly", "Pippin the Penguin", "Luna the Koala", "Sammy the Sloth"];
-        const SETTINGS = ["Whispering Pine Forest", "The Silver Starlight Ocean", "Cloud-Pillow Mountain", "The Moonlit Meadow", "The Enchanted Dream Valley"];
-        const OBJECTS = ["a soft glowing lantern", "a blanket made of starlight", "a warm cup of chamomile tea", "a magic lullaby music box", "a shiny silver feather"];
+        // Generate 1000 procedural stories
+        const ADJECTIVES = ["Quiet", "Dreamy", "Golden", "Silent", "Silver", "Sleepy", "Cozy", "Moonlit"];
+        const NOUNS = ["Bunny", "Pillow", "Lullaby", "Lantern", "River", "Castle", "Meadow", "Cloud"];
+        const AGES = ["0-2", "2+", "3+", "4+", "5+", "6+", "7+"];
 
-        function generateProceduralStory(idNum) {
-            const p = PROTAGONISTS[idNum % PROTAGONISTS.length];
-            const s = SETTINGS[idNum % SETTINGS.length];
-            const o = OBJECTS[idNum % OBJECTS.length];
-            const ageGroup = ["0-2", "2+", "3+", "4+", "5+", "6+", "7+"][idNum % 7];
-
-            return {
-                id: `gen_${idNum}`,
-                title: `${p} and the Journey through ${s}`,
-                age: ageGroup,
-                origin: "Bedtime Story Generator",
-                favorite: false,
-                content: [
-                    `Chapter 1: The Evening Shadows. High above the peaceful lands, the sun gently dipped below the horizon, painting the sky in shades of soft violet and deep indigo. ${p} looked out across ${s}.`,
-                    `The stars began to blink open one by one, like tiny friendly lanterns greeting the night. ${p} felt a pleasant tiredness settling into their weary paws.`,
-                    `Chapter 2: The Soft Pathway. Walking down the winding lavender trail, ${p} noticed how quiet everything had become. The leaves rustled in a sleepy rhythm.`,
-                    `Along the way, ${p} met a friendly wise badger who was carrying ${o}. 'This light will keep your path gentle and warm,' the badger whispered softly.`,
-                    `Chapter 3: The Singing Brook. They reached a small, crystal-clear stream that babbled quietly over smooth river stones. 'Shhh-water, sleep-water,' whispered the brook.`,
-                    `${p} sat by the edge for a brief rest, letting the soothing sound wash away all the busy thoughts of the daytime adventures.`,
-                    `Chapter 4: The Cloud Cradle. Further up the mossy hill, gentle breezes crafted soft, cushiony resting spots beneath the grand canopy of ancient trees.`,
-                    `${p} stepped into a cozy nest made of fragrant dry pine leaves and velvet moss. It felt warmer and softer than the fluffiest marshmallow.`,
-                    `Chapter 5: The Star Lullaby. The sky was now a deep, tranquil canopy of darkness. The silvery moon shone down like a mother's watchful gaze.`,
-                    `A gentle nightingale perching on a low cedar branch began to sing a slow, comforting melody that echoed softly through the valley.`,
-                    `Chapter 6: Drifting to Sleep. ${p} pulled the warm starlight blanket up close, resting a heavy head onto the plush moss pillow.`,
-                    `With one final, long, satisfying yawn, ${p} closed their eyes, drifting happily into sweet, magical dreams until the morning sun.`
-                ]
-            };
-        }
-
-        const ALL_STORIES = [...STORY_DATABASE];
-        for (let idx = 4; idx <= 1000; idx++) {
-            ALL_STORIES.push(generateProceduralStory(idx));
-        }
-
-        const APP_STATE = {
-            currentStory: null,
-            currentPage: 0,
-            activeAgeFilter: 'all',
-            searchQuery: '',
-            bookmarks: JSON.parse(localStorage.getItem('nocturne_bookmarks') || '[]'),
-            readingHistory: JSON.parse(localStorage.getItem('nocturne_progress') || '{}'),
-            settings: JSON.parse(localStorage.getItem('nocturne_settings') || JSON.stringify({
-                font: 'font-serif',
-                fontSize: 20,
-                color: '#E8C587',
-                dimmer: 0
-            })),
-            trialStartDate: localStorage.getItem('nocturne_trial_start') || Date.now(),
-            isSubscribed: localStorage.getItem('nocturne_subscribed') === 'true'
-        };
-
-        if (!localStorage.getItem('nocturne_trial_start')) {
-            localStorage.setItem('nocturne_trial_start', APP_STATE.trialStartDate);
-        }
-
-        class SleepAudioEngine {
-            constructor() {
-                this.ctx = null;
-                this.isPlaying = false;
-                this.currentTrack = 'lullaby';
-                this.volume = 0.4;
-                this.timerId = null;
-                this.activeNodes = [];
-            }
-
-            init() {
-                if (!this.ctx) {
-                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-                    this.ctx = new AudioCtx();
-                }
-            }
-
-            stop() {
-                this.activeNodes.forEach(node => {
-                    try { node.stop(); } catch(e){}
-                    try { node.disconnect(); } catch(e){}
-                });
-                this.activeNodes = [];
-                this.isPlaying = false;
-                updateAudioUI();
-            }
-
-            play(track = this.currentTrack) {
-                this.init();
-                this.stop();
-                this.currentTrack = track;
-                this.isPlaying = true;
-
-                if (this.ctx.state === 'suspended') {
-                    this.ctx.resume();
-                }
-
-                const masterGain = this.ctx.createGain();
-                masterGain.gain.setValueAtTime(this.volume, this.ctx.currentTime);
-                masterGain.connect(this.ctx.destination);
-
-                if (track === 'lullaby') {
-                    const notes = [261.63, 329.63, 392.00, 523.25, 392.00, 329.63];
-                    let step = 0;
-                    const interval = setInterval(() => {
-                        if (!this.isPlaying) return clearInterval(interval);
-                        const osc = this.ctx.createOscillator();
-                        const gain = this.ctx.createGain();
-                        osc.type = 'sine';
-                        osc.frequency.setValueAtTime(notes[step % notes.length], this.ctx.currentTime);
-                        gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
-                        gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 2.5);
-                        osc.connect(gain);
-                        gain.connect(masterGain);
-                        osc.start();
-                        osc.stop(this.ctx.currentTime + 2.6);
-                        step++;
-                    }, 1400);
-                } else if (track === 'waves') {
-                    const bufferSize = this.ctx.sampleRate * 2;
-                    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-                    const data = buffer.getChannelData(0);
-                    let b0=0, b1=0, b2=0, b3=0, b4=0, b5=0, b6=0;
-                    for (let i = 0; i < bufferSize; i++) {
-                        let white = Math.random() * 2 - 1;
-                        b0 = 0.99886 * b0 + white * 0.0555179;
-                        b1 = 0.99332 * b1 + white * 0.0750759;
-                        b2 = 0.96900 * b2 + white * 0.1538520;
-                        b3 = 0.86650 * b3 + white * 0.3104856;
-                        b4 = 0.55000 * b4 + white * 0.5329522;
-                        b5 = -0.7616 * b5 - white * 0.0168980;
-                        data[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
-                        data[i] *= 0.11;
-                        b6 = white * 0.115926;
-                    }
-
-                    const noise = this.ctx.createBufferSource();
-                    noise.buffer = buffer;
-                    noise.loop = true;
-
-                    const filter = this.ctx.createBiquadFilter();
-                    filter.type = 'lowpass';
-                    filter.frequency.value = 300;
-
-                    const lfo = this.ctx.createOscillator();
-                    lfo.frequency.value = 0.1;
-                    const lfoGain = this.ctx.createGain();
-                    lfoGain.gain.value = 200;
-
-                    lfo.connect(lfoGain);
-                    lfoGain.connect(filter.frequency);
-
-                    noise.connect(filter);
-                    filter.connect(masterGain);
-
-                    lfo.start();
-                    noise.start();
-                    this.activeNodes.push(noise, lfo);
-                } else if (track === 'crickets' || track === 'whitenoise') {
-                    const bufferSize = this.ctx.sampleRate * 2;
-                    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-                    const output = buffer.getChannelData(0);
-                    for (let i = 0; i < bufferSize; i++) {
-                        output[i] = Math.random() * 2 - 1;
-                    }
-                    const whiteNoise = this.ctx.createBufferSource();
-                    whiteNoise.buffer = buffer;
-                    whiteNoise.loop = true;
-
-                    const filter = this.ctx.createBiquadFilter();
-                    filter.type = track === 'crickets' ? 'bandpass' : 'lowpass';
-                    filter.frequency.value = track === 'crickets' ? 4500 : 400;
-
-                    whiteNoise.connect(filter);
-                    filter.connect(masterGain);
-                    whiteNoise.start();
-                    this.activeNodes.push(whiteNoise);
-                }
-
-                updateAudioUI();
-            }
-
-            setVolume(vol) {
-                this.volume = vol;
-                if (this.isPlaying) this.play(this.currentTrack);
-            }
-
-            setTimer(minutes) {
-                if (this.timerId) clearTimeout(this.timerId);
-                if (minutes > 0) {
-                    this.timerId = setTimeout(() => {
-                        this.stop();
-                    }, minutes * 60 * 1000);
-                }
-            }
-        }
-
-        const audioEngine = new SleepAudioEngine();
-
-        const el = {
-            viewDashboard: document.getElementById('view-dashboard'),
-            viewReader: document.getElementById('view-reader'),
-            storyGrid: document.getElementById('story-grid'),
-            storyCount: document.getElementById('story-count'),
-            bookmarkCount: document.getElementById('bookmark-count'),
-            searchInput: document.getElementById('search-input'),
-            btnRandomStory: document.getElementById('btn-random-story'),
-            btnDashboard: document.getElementById('btn-dashboard'),
-            btnSettings: document.getElementById('btn-settings'),
-            btnAudioToggle: document.getElementById('btn-audio-toggle'),
-            btnBookmark: document.getElementById('btn-bookmark'),
-            modalSettings: document.getElementById('modal-settings'),
-            modalAudio: document.getElementById('modal-audio'),
-            modalPaywall: document.getElementById('modal-paywall'),
-            modalPaymentDemo: document.getElementById('modal-payment-demo'),
-            dimmerOverlay: document.getElementById('dimmer-overlay'),
-            readerTitle: document.getElementById('reader-title'),
-            readerAgeBadge: document.getElementById('reader-age-badge'),
-            readerOrigin: document.getElementById('reader-origin'),
-            readerText: document.getElementById('reader-text'),
-            pageIndicator: document.getElementById('page-indicator'),
-            readProgressFill: document.getElementById('read-progress-fill'),
-            btnPrevPage: document.getElementById('btn-prev-page'),
-            btnNextPage: document.getElementById('btn-next-page'),
-            fontSizeSlider: document.getElementById('font-size-slider'),
-            fontSizeVal: document.getElementById('font-size-val'),
-            dimmerSlider: document.getElementById('dimmer-slider'),
-            dimmerVal: document.getElementById('dimmer-val'),
-            audioVolSlider: document.getElementById('audio-vol-slider'),
-            audioVolVal: document.getElementById('audio-vol-val'),
-            audioIcon: document.getElementById('audio-icon'),
-            audioStatusText: document.getElementById('audio-status-text'),
-            trialDaysText: document.getElementById('trial-days-text')
-        };
-
-        function renderDashboard() {
-            const filtered = ALL_STORIES.filter(s => {
-                const matchAge = APP_STATE.activeAgeFilter === 'all' || s.age === APP_STATE.activeAgeFilter;
-                const matchSearch = s.title.toLowerCase().includes(APP_STATE.searchQuery.toLowerCase()) || 
-                                    s.origin.toLowerCase().includes(APP_STATE.searchQuery.toLowerCase());
-                return matchAge && matchSearch;
+        const ALL_STORIES = [...BASE_STORIES];
+        for (let i = 8; i <= 1000; i++) {
+            const adj = ADJECTIVES[i % ADJECTIVES.length];
+            const noun = NOUNS[i % NOUNS.length];
+            const age = AGES[i % AGES.length];
+            ALL_STORIES.push({
+                id: i,
+                title: `The ${adj} ${noun} #${i}`,
+                age: age,
+                minutes: 6 + (i % 8),
+                category: "Bedtime Tales",
+                summary: `A peaceful bedtime story about a ${adj.toLowerCase()} ${noun.toLowerCase()} journeying into sleep.`
             });
+        }
 
-            const displayList = filtered.slice(0, 40);
+        // GENERATE 12-PAGE BEDTIME NARRATIVE
+        function generate12PageStory(title, age) {
+            return [
+                `Chapter 1: The Soft Twilight.\n\nOnce upon a time, as the golden sun drifted gently below the edge of the world, twilight painted the sky in shades of deep indigo and soft violet. High above, tiny stars began to blink awake, one by one. The air grew cool and tranquil, whispering softly through the quiet leaves.`,
+                `Chapter 2: The Whispering Wind.\n\nDown in the peaceful valley, a warm breeze glided over the sleepy meadows. It sang a low, gentle lullaby to the blooming flowers, which closed their colorful petals for the night. Every creature in the forest knew that it was time to rest.`,
+                `Chapter 3: The Secret Path.\n\nA tiny traveler walked down a soft, mossy path illuminated by the gentle glow of fireflies. Each step felt light and peaceful. The woods were quiet, save for the rhythmic rhythm of crickets softly humming in the tall grass.`,
+                `Chapter 4: The Cloud Pillow.\n\nAlong the journey, the traveler discovered a soft bed made of fluffy white cloud fluff. Touching it felt lighter than silk. Resting here for a moment brought a deep, soothing sense of relaxation and warmth.`,
+                `Chapter 5: The Silver Stream.\n\nNext to the cloud bed flowed a clear silver stream. Its water sparkled under the crescent moon as it bubbled softly over round river stones. The sound was as soothing as a mother's gentle song.`,
+                `Chapter 6: The Starlight Blanket.\n\nThe night sky pulled a warm blanket of starshine over the entire forest. Everything was bathed in a gentle, amber glow that kept all worries far away. It was a place of complete peace and comfort.`,
+                `Chapter 7: The Gentle Lantern.\n\nHigh in a cozy tree branch rested a glowing lantern powered by sleepy dreams. Its light flickered softly, making long, calm shadows dance across the forest floor.`,
+                `Chapter 8: The Yawning Forest.\n\nOne by one, the sleepy forest animals gathered under the ancient tree. The little squirrels curled into tight fur balls, and the deer laid down softly upon the pine needles. A collective, warm yawn echoed gently through the air.`,
+                `Chapter 9: Floating on Air.\n\nFeeling lighter than a feather, the mind began to drift across dreamland. Gentle waves of slumber carried away the thoughts of the day, leaving behind only peace and calm.`,
+                `Chapter 10: The Moonlit Lullaby.\n\nThe moon reached its highest peak in the velvet night. It beamed down a gentle lullaby that resonated in every cozy room and forest nest across the world.`,
+                `Chapter 11: Deep Sleep Approaches.\n\nBreathing grew slow and steady. In and out... soft and rhythmic. The heavy eyelids felt warm and comfortable, ready to close for a night of beautiful dreams.`,
+                `Chapter 12: Goodnight Dreamland.\n\nAs the night wrapped the world in its loving embrace, rest took over completely. Safe, cozy, and loved under the stars. Goodnight little one, sweet dreams.`
+            ];
+        }
 
-            el.storyCount.textContent = filtered.length;
-            el.bookmarkCount.textContent = APP_STATE.bookmarks.length;
+        // APP STATE
+        let currentState = {
+            currentView: 'dashboard', // dashboard or reader
+            selectedAge: 'all',
+            searchQuery: '',
+            currentStory: null,
+            currentPageIndex: 0,
+            storyPages: [],
+            fontSize: 20,
+            dimmerOpacity: 0,
+            textColor: '#E8C587',
+            fontFamily: 'font-serif',
+            audioPlaying: false,
+            audioTrack: 'lullaby',
+            sleepTimerMinutes: 0,
+            sleepTimerId: null,
+            bookmarkedIds: new Set(),
+            trialDaysRemaining: 7
+        };
 
-            el.storyGrid.innerHTML = '';
+        // DOM ELEMENTS
+        const viewDashboard = document.getElementById('view-dashboard');
+        const viewReader = document.getElementById('view-reader');
+        const storyGrid = document.getElementById('story-grid');
+        const searchInput = document.getElementById('search-input');
+        const ageBtns = document.querySelectorAll('.age-filter-btn');
+        
+        const modalSettings = document.getElementById('modal-settings');
+        const modalAudio = document.getElementById('modal-audio');
+        const modalPaywall = document.getElementById('modal-paywall');
+
+        const btnDashboard = document.getElementById('btn-dashboard');
+        const btnSettings = document.getElementById('btn-settings');
+        const btnAudioToggle = document.getElementById('btn-audio-toggle');
+        const btnBookmark = document.getElementById('btn-bookmark');
+
+        const pageText = document.getElementById('page-text');
+        const pageContainer = document.getElementById('page-container');
+        const pageIndicator = document.getElementById('page-indicator');
+        const btnPrevPage = document.getElementById('btn-prev-page');
+        const btnNextPage = document.getElementById('btn-next-page');
+
+        const sliderFontSize = document.getElementById('slider-font-size');
+        const labelFontSize = document.getElementById('label-font-size');
+        const sliderDimmer = document.getElementById('slider-dimmer');
+        const labelDimmer = document.getElementById('label-dimmer');
+        const dimmerOverlay = document.getElementById('dimmer-overlay');
+
+        // INITIALIZE APP
+        function initApp() {
+            loadSavedProgress();
+            renderStoryGrid();
+            setupEventListeners();
+            initWebAudio();
+        }
+
+        // LOAD LOCAL PROGRESS
+        function loadSavedProgress() {
+            const saved = localStorage.getItem('nocturne_state');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    if (parsed.fontSize) currentState.fontSize = parsed.fontSize;
+                    if (parsed.textColor) currentState.textColor = parsed.textColor;
+                    if (parsed.fontFamily) currentState.fontFamily = parsed.fontFamily;
+                    if (parsed.bookmarked) currentState.bookmarkedIds = new Set(parsed.bookmarked);
+                } catch(e){}
+            }
+            applyDisplaySettings();
+        }
+
+        function saveProgress() {
+            const data = {
+                fontSize: currentState.fontSize,
+                textColor: currentState.textColor,
+                fontFamily: currentState.fontFamily,
+                bookmarked: Array.from(currentState.bookmarkedIds)
+            };
+            localStorage.setItem('nocturne_state', JSON.stringify(data));
+        }
+
+        // RENDER STORIES GRID
+        function renderStoryGrid() {
+            storyGrid.innerHTML = '';
             
-            if (displayList.length === 0) {
-                el.storyGrid.innerHTML = `
-                    <div class="col-span-full text-center py-12 text-gray-500 font-sans">
-                        <i class="fa-solid fa-moon text-3xl mb-2 opacity-50"></i>
-                        <p>No bedtime stories found matching your filter.</p>
-                    </div>`;
+            const filtered = ALL_STORIES.filter(story => {
+                const matchesAge = currentState.selectedAge === 'all' || story.age === currentState.selectedAge;
+                const matchesSearch = story.title.toLowerCase().includes(currentState.searchQuery.toLowerCase()) ||
+                                      story.summary.toLowerCase().includes(currentState.searchQuery.toLowerCase());
+                return matchesAge && matchesSearch;
+            }).slice(0, 40); // Show top 40 matching
+
+            if (filtered.length === 0) {
+                storyGrid.innerHTML = `<div class="col-span-full py-12 text-center text-kindle-blue text-sm">No bedtime stories found matching your filter.</div>`;
                 return;
             }
 
-            displayList.forEach(story => {
-                const isBookmarked = APP_STATE.bookmarks.includes(story.id);
-                const savedPage = APP_STATE.readingHistory[story.id];
-
+            filtered.forEach(story => {
+                const isBookmarked = currentState.bookmarkedIds.has(story.id);
                 const card = document.createElement('div');
-                card.className = "bg-kindle-surface border border-kindle-border rounded-xl p-4 hover:border-kindle-amber/40 transition cursor-pointer flex flex-col justify-between group";
+                card.className = "bg-kindle-surface border border-kindle-border p-4 rounded-xl flex flex-col justify-between hover:border-kindle-amber/50 transition cursor-pointer group";
                 card.innerHTML = `
-                    <div>
-                        <div class="flex justify-between items-start gap-2 mb-2">
-                            <span class="text-[10px] font-sans px-2 py-0.5 rounded border border-kindle-border text-kindle-amber bg-amber-950/20">${story.age} Yrs</span>
-                            <div class="flex items-center gap-2">
-                                ${savedPage !== undefined ? `<span class="text-[10px] text-gray-500"><i class="fa-solid fa-book-open"></i> Pg ${savedPage + 1}</span>` : ''}
-                                <button class="btn-card-bookmark text-xs ${isBookmarked ? 'text-amber-400' : 'text-gray-600 hover:text-gray-400'}" data-id="${story.id}">
-                                    <i class="fa-solid fa-bookmark"></i>
-                                </button>
-                            </div>
+                    <div class="flex flex-col gap-2">
+                        <div class="flex items-center justify-between text-xs text-kindle-blue">
+                            <span class="px-2 py-0.5 rounded bg-kindle-bg border border-kindle-border">${story.age} yrs</span>
+                            <span><i class="fa-regular fa-clock mr-1"></i>${story.minutes} min</span>
                         </div>
-                        <h3 class="font-display text-lg text-kindle-cream group-hover:text-kindle-amber transition line-clamp-1">${story.title}</h3>
-                        <p class="text-xs text-gray-500 font-sans mt-1 italic">${story.origin}</p>
+                        <h3 class="font-display text-kindle-amber group-hover:text-amber-300 text-base font-medium transition">${story.title}</h3>
+                        <p class="text-xs text-kindle-cream/80 line-clamp-2 leading-relaxed">${story.summary}</p>
                     </div>
-                    <div class="mt-4 pt-3 border-t border-kindle-border/40 flex items-center justify-between text-xs text-gray-400 font-sans">
-                        <span class="text-kindle-amber/90 font-medium">${story.content.length} Full Pages</span>
-                        <span class="text-kindle-amber opacity-0 group-hover:opacity-100 transition flex items-center gap-1">Read <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
+                    <div class="mt-4 flex items-center justify-between pt-3 border-t border-kindle-border/40 text-xs text-kindle-blue">
+                        <span>12 Pages</span>
+                        <span class="text-kindle-amber group-hover:translate-x-1 transition flex items-center gap-1">Read <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
                     </div>
                 `;
-
-                card.addEventListener('click', (e) => {
-                    if (e.target.closest('.btn-card-bookmark')) {
-                        toggleBookmark(story.id);
-                        e.stopPropagation();
-                        return;
-                    }
-                    const pageToOpen = APP_STATE.readingHistory[story.id] || 0;
-                    openStory(story, pageToOpen);
-                });
-
-                el.storyGrid.appendChild(card);
+                card.onclick = () => openStory(story);
+                storyGrid.appendChild(card);
             });
         }
 
-        function openStory(story, pageIndex = 0) {
-            if (!checkTrialStatus()) return;
-            APP_STATE.currentStory = story;
-            APP_STATE.currentPage = pageIndex;
+        // OPEN STORY IN READER VIEW
+        function openStory(story) {
+            currentState.currentStory = story;
+            currentState.currentPageIndex = 0;
+            currentState.storyPages = generate12PageStory(story.title, story.age);
+            
+            document.getElementById('reader-story-title').innerText = story.title;
+            document.getElementById('reader-story-age').innerText = `Age ${story.age}`;
+            document.getElementById('reader-story-duration').innerText = `${story.minutes} min read`;
 
-            el.readerTitle.textContent = story.title;
-            el.readerAgeBadge.textContent = `Age ${story.age}`;
-            el.readerOrigin.textContent = story.origin;
+            updateBookmarkButtonUI();
+            renderPage();
 
-            updateReaderContent();
-            updateBookmarkBtnUI();
-
-            el.viewDashboard.classList.add('hidden');
-            el.viewReader.classList.remove('hidden');
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            viewDashboard.classList.add('hidden');
+            viewReader.classList.remove('hidden');
+            currentState.currentView = 'reader';
+            window.scrollTo(0, 0);
         }
 
-        function updateReaderContent() {
-            const story = APP_STATE.currentStory;
-            if (!story) return;
-
-            const totalPages = story.content.length;
-            const curPage = APP_STATE.currentPage;
-
-            el.readerText.classList.remove('page-active');
-            el.readerText.classList.add('page-enter');
-
+        // RENDER PAGE CONTENT
+        function renderPage() {
+            pageContainer.classList.add('page-enter');
+            
             setTimeout(() => {
-                el.readerText.textContent = story.content[curPage];
-                el.readerText.classList.remove('page-enter');
-                el.readerText.classList.add('page-active');
-            }, 120);
-
-            el.pageIndicator.textContent = `Page ${curPage + 1} of ${totalPages}`;
-            const progressPercent = ((curPage + 1) / totalPages) * 100;
-            el.readProgressFill.style.width = `${progressPercent}%`;
-
-            el.btnPrevPage.disabled = curPage === 0;
-            el.btnNextPage.disabled = curPage === totalPages - 1;
-
-            APP_STATE.readingHistory[story.id] = curPage;
-            localStorage.setItem('nocturne_progress', JSON.stringify(APP_STATE.readingHistory));
-        }
-
-        function applySettings() {
-            const s = APP_STATE.settings;
-            el.readerText.style.fontSize = `${s.fontSize}px`;
-            el.readerText.style.color = s.color;
-            
-            el.readerText.className = `page-content page-active w-full text-justify leading-relaxed tracking-wide transition-all ${s.font}`;
-            
-            el.dimmerOverlay.style.opacity = s.dimmer / 100;
-            el.dimmerVal.textContent = `${s.dimmer}%`;
-            el.fontSizeVal.textContent = `${s.fontSize}px`;
-
-            localStorage.setItem('nocturne_settings', JSON.stringify(s));
-        }
-
-        function toggleBookmark(storyId) {
-            const idx = APP_STATE.bookmarks.indexOf(storyId);
-            if (idx > -1) {
-                APP_STATE.bookmarks.splice(idx, 1);
-            } else {
-                APP_STATE.bookmarks.push(storyId);
-            }
-            localStorage.setItem('nocturne_bookmarks', JSON.stringify(APP_STATE.bookmarks));
-            updateBookmarkBtnUI();
-            renderDashboard();
-        }
-
-        function updateBookmarkBtnUI() {
-            if (!APP_STATE.currentStory) return;
-            const isBookmarked = APP_STATE.bookmarks.includes(APP_STATE.currentStory.id);
-            if (isBookmarked) {
-                el.btnBookmark.classList.remove('text-gray-500');
-                el.btnBookmark.classList.add('text-amber-400');
-            } else {
-                el.btnBookmark.classList.remove('text-amber-400');
-                el.btnBookmark.classList.add('text-gray-500');
-            }
-        }
-
-        function updateAudioUI() {
-            if (audioEngine.isPlaying) {
-                el.audioIcon.className = "fa-solid fa-volume-high text-kindle-amber audio-playing";
-                el.audioStatusText.textContent = "Playing";
-            } else {
-                el.audioIcon.className = "fa-solid fa-volume-xmark text-gray-500";
-                el.audioStatusText.textContent = "Sound Off";
-            }
-        }
-
-        function checkTrialStatus() {
-            if (APP_STATE.isSubscribed) {
-                el.trialDaysText.textContent = "PRO Subscribed";
-                return true;
-            }
-
-            const elapsedDays = Math.floor((Date.now() - parseInt(APP_STATE.trialStartDate)) / (1000 * 60 * 60 * 24));
-            const daysRemaining = Math.max(0, 7 - elapsedDays);
-
-            if (daysRemaining > 0) {
-                el.trialDaysText.textContent = `${daysRemaining} Days Free Trial`;
-                return true;
-            } else {
-                el.trialDaysText.textContent = `Trial Expired`;
-                showPaywall();
-                return false;
-            }
-        }
-
-        function showPaywall() {
-            el.modalPaywall.classList.remove('hidden');
-        }
-
-        el.btnDashboard.addEventListener('click', () => {
-            el.viewReader.classList.add('hidden');
-            el.viewDashboard.classList.remove('hidden');
-            renderDashboard();
-        });
-
-        el.searchInput.addEventListener('input', (e) => {
-            APP_STATE.searchQuery = e.target.value;
-            renderDashboard();
-        });
-
-        document.querySelectorAll('.age-filter-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                document.querySelectorAll('.age-filter-btn').forEach(b => {
-                    b.classList.remove('bg-kindle-amber', 'text-black', 'font-semibold');
-                    b.classList.add('bg-kindle-surface', 'text-kindle-cream');
-                });
-                e.target.classList.remove('bg-kindle-surface', 'text-kindle-cream');
-                e.target.classList.add('bg-kindle-amber', 'text-black', 'font-semibold');
-
-                APP_STATE.activeAgeFilter = e.target.dataset.age;
-                renderDashboard();
-            });
-        });
-
-        el.btnRandomStory.addEventListener('click', () => {
-            const randomIndex = Math.floor(Math.random() * ALL_STORIES.length);
-            openStory(ALL_STORIES[randomIndex]);
-        });
-
-        el.btnPrevPage.addEventListener('click', () => {
-            if (APP_STATE.currentPage > 0) {
-                APP_STATE.currentPage--;
-                updateReaderContent();
-            }
-        });
-
-        el.btnNextPage.addEventListener('click', () => {
-            if (APP_STATE.currentStory && APP_STATE.currentPage < APP_STATE.currentStory.content.length - 1) {
-                APP_STATE.currentPage++;
-                updateReaderContent();
-            }
-        });
-
-        el.btnBookmark.addEventListener('click', () => {
-            if (APP_STATE.currentStory) {
-                toggleBookmark(APP_STATE.currentStory.id);
-            }
-        });
-
-        el.btnSettings.addEventListener('click', () => el.modalSettings.classList.remove('hidden'));
-        document.getElementById('close-settings').addEventListener('click', () => el.modalSettings.classList.add('hidden'));
-
-        el.btnAudioToggle.addEventListener('click', () => {
-            if (!audioEngine.isPlaying) {
-                audioEngine.play();
-            }
-            el.modalAudio.classList.remove('hidden');
-        });
-        document.getElementById('close-audio').addEventListener('click', () => el.modalAudio.classList.add('hidden'));
-
-        document.querySelectorAll('.font-option-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                APP_STATE.settings.font = e.target.dataset.font;
-                applySettings();
-            });
-        });
-
-        document.querySelectorAll('.color-option-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                APP_STATE.settings.color = e.target.dataset.color;
-                applySettings();
-            });
-        });
-
-        el.fontSizeSlider.addEventListener('input', (e) => {
-            APP_STATE.settings.fontSize = parseInt(e.target.value);
-            applySettings();
-        });
-
-        el.dimmerSlider.addEventListener('input', (e) => {
-            APP_STATE.settings.dimmer = parseInt(e.target.value);
-            applySettings();
-        });
-
-        document.querySelectorAll('.sound-track-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                document.querySelectorAll('.sound-track-btn').forEach(b => {
-                    b.classList.remove('border-kindle-amber', 'bg-amber-950/20', 'text-kindle-amber');
-                    b.classList.add('border-kindle-border', 'text-gray-400');
-                });
-                const target = e.currentTarget;
-                target.classList.remove('border-kindle-border', 'text-gray-400');
-                target.classList.add('border-kindle-amber', 'bg-amber-950/20', 'text-kindle-amber');
+                pageText.innerText = currentState.storyPages[currentState.currentPageIndex];
+                pageIndicator.innerText = `Page ${currentState.currentPageIndex + 1} of ${currentState.storyPages.length}`;
                 
-                audioEngine.play(target.dataset.sound);
-            });
-        });
+                btnPrevPage.disabled = currentState.currentPageIndex === 0;
+                btnNextPage.innerText = currentState.currentPageIndex === currentState.storyPages.length - 1 ? 'Finish Story' : 'Next';
 
-        el.audioVolSlider.addEventListener('input', (e) => {
-            const vol = parseInt(e.target.value) / 100;
-            audioEngine.setVolume(vol);
-            el.audioVolVal.textContent = `${e.target.value}%`;
-        });
+                pageContainer.classList.remove('page-enter');
+                pageContainer.classList.add('page-active');
+            }, 100);
+        }
 
-        document.querySelectorAll('.timer-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                document.querySelectorAll('.timer-btn').forEach(b => b.classList.remove('border-kindle-amber', 'bg-amber-950/20', 'text-kindle-amber'));
-                e.target.classList.add('border-kindle-amber', 'bg-amber-950/20', 'text-kindle-amber');
-                audioEngine.setTimer(parseInt(e.target.dataset.time));
-            });
-        });
+        // APPLY DISPLAY SETTINGS
+        function applyDisplaySettings() {
+            pageText.style.fontSize = `${currentState.fontSize}px`;
+            pageText.style.color = currentState.textColor;
+            
+            pageContainer.className = `w-full max-w-2xl leading-relaxed ${currentState.fontFamily}`;
+            dimmerOverlay.style.opacity = currentState.dimmerOpacity / 100;
 
-        document.getElementById('btn-subscribe-now').addEventListener('click', () => {
-            el.modalPaywall.classList.add('hidden');
-            el.modalPaymentDemo.classList.remove('hidden');
-        });
+            labelFontSize.innerText = `${currentState.fontSize}px`;
+            labelDimmer.innerText = `${currentState.dimmerOpacity}%`;
+        }
 
-        document.getElementById('btn-close-paywall').addEventListener('click', () => {
-            el.modalPaywall.classList.add('hidden');
-        });
+        // WEB AUDIO API SOUNDSCAPES
+        let audioCtx = null;
+        let activeOscillators = [];
 
-        document.getElementById('btn-complete-payment').addEventListener('click', () => {
-            APP_STATE.isSubscribed = true;
-            localStorage.setItem('nocturne_subscribed', 'true');
-            el.modalPaymentDemo.classList.add('hidden');
-            checkTrialStatus();
-            alert("Subscription successful! Enjoy unlimited dark mode bedtime stories.");
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (!el.viewReader.classList.contains('hidden')) {
-                if (e.key === 'ArrowRight') el.btnNextPage.click();
-                if (e.key === 'ArrowLeft') el.btnPrevPage.click();
+        function initWebAudio() {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            if (AudioContext) {
+                audioCtx = new AudioContext();
             }
-        });
+        }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            applySettings();
-            checkTrialStatus();
-            renderDashboard();
-        });
+        function playAmbientSound(type) {
+            stopAmbientSound();
+            if (!audioCtx) initWebAudio();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+
+            currentState.audioPlaying = true;
+            document.getElementById('audio-icon').className = "fa-solid fa-volume-high text-kindle-amber audio-playing";
+            document.getElementById('audio-status-text').innerText = "Playing";
+
+            if (type === 'lullaby') {
+                // Soft sine wave lullaby chord sequence
+                const notes = [261.63, 329.63, 392.00, 523.25]; // C E G C
+                notes.forEach((freq, index) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                    
+                    gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
+                    
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start();
+                    activeOscillators.push(osc);
+                });
+            } else if (type === 'waves' || type === 'pinknoise') {
+                // Pink Noise / Waves generation
+                const bufferSize = audioCtx.sampleRate * 2;
+                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const data = buffer.getChannelData(0);
+                let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+
+                for (let i = 0; i < bufferSize; i++) {
+                    let white = Math.random() * 2 - 1;
+                    b0 = 0.99886 * b0 + white * 0.0555179;
+                    b1 = 0.99332 * b1 + white * 0.0750759;
+                    b2 = 0.96900 * b2 + white * 0.1538520;
+                    b3 = 0.86650 * b3 + white * 0.3104856;
+                    b4 = 0.55000 * b4 + white * 0.5329522;
+                    b5 = -0.7616 * b5 - white * 0.0168980;
+                    data[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
+                    data[i] *= 0.01;
+                    b6 = white * 0.115926;
+                }
+
+                const noise = audioCtx.createBufferSource();
+                noise.buffer = buffer;
+                noise.loop = true;
+                const gain = audioCtx.createGain();
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                noise.connect(gain);
+                gain.connect(audioCtx.destination);
+                noise.start();
+                activeOscillators.push(noise);
+            }
+        }
+
+        function stopAmbientSound() {
+            activeOscillators.forEach(node => {
+                try { node.stop(); } catch(e){}
+            });
+            activeOscillators = [];
+            currentState.audioPlaying = false;
+            document.getElementById('audio-icon').className = "fa-solid fa-volume-xmark text-gray-500";
+            document.getElementById('audio-status-text').innerText = "Sound Off";
+        }
+
+        // EVENT LISTENERS
+        function setupEventListeners() {
+            // Dashboard Navigation
+            btnDashboard.onclick = () => {
+                viewReader.classList.add('hidden');
+                viewDashboard.classList.remove('hidden');
+                currentState.currentView = 'dashboard';
+            };
+
+            // Search & Filter
+            searchInput.oninput = (e) => {
+                currentState.searchQuery = e.target.value;
+                renderStoryGrid();
+            };
+
+            ageBtns.forEach(btn => {
+                btn.onclick = () => {
+                    ageBtns.forEach(b => b.classList.remove('active', 'bg-kindle-amber', 'text-black'));
+                    ageBtns.forEach(b => b.classList.add('bg-kindle-surface', 'text-kindle-cream'));
+                    
+                    btn.classList.add('active', 'bg-kindle-amber', 'text-black');
+                    currentState.selectedAge = btn.dataset.age;
+                    renderStoryGrid();
+                };
+            });
+
+            // Reader Pagination
+            btnPrevPage.onclick = () => {
+                if (currentState.currentPageIndex > 0) {
+                    currentState.currentPageIndex--;
+                    renderPage();
+                }
+            };
+
+            btnNextPage.onclick = () => {
+                if (currentState.currentPageIndex < currentState.storyPages.length - 1) {
+                    currentState.currentPageIndex++;
+                    renderPage();
+                } else {
+                    btnDashboard.click();
+                }
+            };
+
+            // Modals Toggle
+            btnSettings.onclick = () => modalSettings.classList.remove('hidden');
+            document.getElementById('btn-close-settings').onclick = () => modalSettings.classList.add('hidden');
+
+            btnAudioToggle.onclick = () => modalAudio.classList.remove('hidden');
+            document.getElementById('btn-close-audio').onclick = () => modalAudio.classList.add('hidden');
+
+            document.getElementById('btn-stop-audio').onclick = () => {
+                stopAmbientSound();
+                modalAudio.classList.add('hidden');
+            };
+
+            // Display Controls
+            sliderFontSize.oninput = (e) => {
+                currentState.fontSize = parseInt(e.target.value);
+                applyDisplaySettings();
+                saveProgress();
+            };
+
+            sliderDimmer.oninput = (e) => {
+                currentState.dimmerOpacity = parseInt(e.target.value);
+                applyDisplaySettings();
+            };
+
+            document.querySelectorAll('.tone-btn').forEach(btn => {
+                btn.onclick = () => {
+                    document.querySelectorAll('.tone-btn').forEach(b => b.classList.remove('border-kindle-amber'));
+                    btn.classList.add('border-kindle-amber');
+                    currentState.textColor = btn.dataset.color;
+                    applyDisplaySettings();
+                    saveProgress();
+                };
+            });
+
+            document.querySelectorAll('.font-family-btn').forEach(btn => {
+                btn.onclick = () => {
+                    document.querySelectorAll('.font-family-btn').forEach(b => b.classList.remove('border-kindle-amber'));
+                    btn.classList.add('border-kindle-amber');
+                    currentState.fontFamily = btn.dataset.font;
+                    applyDisplaySettings();
+                    saveProgress();
+                };
+            });
+
+            // Sound Tracks Selection
+            document.querySelectorAll('.sound-track-btn').forEach(btn => {
+                btn.onclick = () => {
+                    playAmbientSound(btn.dataset.track);
+                    modalAudio.classList.add('hidden');
+                };
+            });
+
+            // Bookmark Toggle
+            btnBookmark.onclick = () => {
+                if (!currentState.currentStory) return;
+                const id = currentState.currentStory.id;
+                if (currentState.bookmarkedIds.has(id)) {
+                    currentState.bookmarkedIds.delete(id);
+                } else {
+                    currentState.bookmarkedIds.add(id);
+                }
+                updateBookmarkButtonUI();
+                saveProgress();
+            };
+
+            // Paywall Simulation Trigger
+            document.getElementById('trial-badge').onclick = () => {
+                modalPaywall.classList.remove('hidden');
+            };
+            document.getElementById('btn-close-paywall').onclick = () => modalPaywall.classList.add('hidden');
+            document.getElementById('btn-subscribe').onclick = () => {
+                alert("Simulated Razorpay / Google Play IAP Checkout for ₹29/Month Subscription!");
+                modalPaywall.classList.add('hidden');
+            };
+        }
+
+        function updateBookmarkButtonUI() {
+            if (currentState.currentStory && currentState.bookmarkedIds.has(currentState.currentStory.id)) {
+                btnBookmark.classList.remove('text-gray-500');
+                btnBookmark.classList.add('text-kindle-amber');
+            } else {
+                btnBookmark.classList.remove('text-kindle-amber');
+                btnBookmark.classList.add('text-gray-500');
+            }
+        }
+
+        // START APP ON LOAD
+        window.onload = initApp;
     </script>
 </body>
 </html>
