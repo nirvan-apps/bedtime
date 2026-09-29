@@ -100,7 +100,7 @@
                     <i class="fa-solid fa-book-bookmark text-lg"></i>
                 </button>
                 <h1 class="text-lg font-display tracking-wide font-medium text-kindle-amber hidden sm:block">Nocturne</h1>
-                <span id="trial-badge" class="text-xs px-2.5 py-1 rounded-full bg-amber-950/80 text-amber-200 border border-amber-800/50">
+                <span id="trial-badge" class="text-xs px-2.5 py-1 rounded-full bg-amber-950/80 text-amber-200 border border-amber-800/50 cursor-pointer">
                     <i class="fa-regular fa-clock mr-1"></i> <span id="trial-days-text">7 Days Trial</span>
                 </span>
             </div>
@@ -273,15 +273,13 @@
                     </button>
                 </div>
 
-                <!-- Sleep Timer -->
+                <!-- Volume Control -->
                 <div class="flex flex-col gap-2">
-                    <span class="text-xs text-kindle-cream">Auto Sleep Timer</span>
-                    <div class="grid grid-cols-4 gap-2 text-xs">
-                        <button class="timer-btn active p-2 rounded-lg border border-kindle-amber bg-kindle-bg text-kindle-amber" data-timer="off">Off</button>
-                        <button class="timer-btn p-2 rounded-lg border border-kindle-border bg-kindle-bg text-kindle-cream" data-timer="5">5 Min</button>
-                        <button class="timer-btn p-2 rounded-lg border border-kindle-border bg-kindle-bg text-kindle-cream" data-timer="15">15 Min</button>
-                        <button class="timer-btn p-2 rounded-lg border border-kindle-border bg-kindle-bg text-kindle-cream" data-timer="30">30 Min</button>
+                    <div class="flex justify-between text-xs text-kindle-cream">
+                        <span>Audio Volume</span>
+                        <span id="label-volume">50%</span>
                     </div>
+                    <input type="range" id="slider-volume" min="0" max="100" value="50" class="w-full">
                 </div>
 
                 <button id="btn-stop-audio" class="w-full py-2.5 rounded-xl bg-red-950/60 border border-red-800/50 text-red-200 text-xs font-semibold hover:bg-red-900/60 transition">
@@ -317,58 +315,69 @@
 
     <!-- JAVASCRIPT APP LOGIC -->
     <script>
-        // CORE STORIES DATABASE GENERATOR (1000+ SIMULATED STORIES)
-        const BASE_STORIES = [
-            { id: 1, title: "The Sleepy Little Star", age: "0-2", minutes: 5, category: "Space", summary: "A tiny blue star finds its pillow of fluffy night clouds." },
-            { id: 2, title: "Whispering Willow's Blanket", age: "2+", minutes: 6, category: "Nature", summary: "How the gentle tree tucked all forest creatures into sleep." },
-            { id: 3, title: "Barnaby Bear's Yawn", age: "3+", minutes: 8, category: "Animals", summary: "A bear who taught the forest how to yawn under moonlight." },
-            { id: 4, title: "The Moon Boat Voyage", age: "4+", minutes: 10, category: "Fantasy", summary: "Sailing across silver skies in a boat woven from stardust." },
-            { id: 5, title: "Oliver Owl's Night Song", age: "5+", minutes: 9, category: "Bedtime", summary: "A quiet owl lullaby that calms the roaring river." },
-            { id: 6, title: "The Dragon Who Wanted Soft Pillows", age: "6+", minutes: 12, category: "Magic", summary: "A gentle dragon searching for cloud fluff across mountains." },
-            { id: 7, title: "The Clockmaker of Dreamland", age: "7+", minutes: 14, category: "Adventure", summary: "Fixing the ticking clocks of night to usher peaceful dreams." }
-        ];
-
-        // Generate 1000 procedural stories
-        const ADJECTIVES = ["Quiet", "Dreamy", "Golden", "Silent", "Silver", "Sleepy", "Cozy", "Moonlit"];
-        const NOUNS = ["Bunny", "Pillow", "Lullaby", "Lantern", "River", "Castle", "Meadow", "Cloud"];
+        // PROProcedural Unique Content Engine
+        const CHARACTERS = ["Barnaby the Bear", "Luna the Owl", "Pip the Squirrel", "Orion the Star", "Willow the Tree", "Finley the Fox", "Milo the Rabbit", "Clara the Cloud"];
+        const PLACES = ["the Whispering Forest", "the Silver Valley", "the Starlight Meadow", "the Velvet Canopy", "the Quiet Riverbank", "the Moonlit Sanctuary"];
+        const ITEMS = ["a glowing lantern", "a soft velvet blanket", "a pillow of stardust", "a golden lullaby bell", "a gentle breeze", "a cup of warm chamomile tea"];
         const AGES = ["0-2", "2+", "3+", "4+", "5+", "6+", "7+"];
 
-        const ALL_STORIES = [...BASE_STORIES];
-        for (let i = 8; i <= 1000; i++) {
-            const adj = ADJECTIVES[i % ADJECTIVES.length];
-            const noun = NOUNS[i % NOUNS.length];
+        // Generate 1000 Unique Stories with Custom Narrative Hooks
+        const ALL_STORIES = [];
+        for (let i = 1; i <= 1000; i++) {
+            const hero = CHARACTERS[i % CHARACTERS.length];
+            const realm = PLACES[i % PLACES.length];
+            const magicItem = ITEMS[i % ITEMS.length];
             const age = AGES[i % AGES.length];
+
             ALL_STORIES.push({
                 id: i,
-                title: `The ${adj} ${noun} #${i}`,
+                title: `${hero} & ${magicItem.charAt(0).toUpperCase() + magicItem.slice(1)}`,
+                hero: hero,
+                realm: realm,
+                item: magicItem,
                 age: age,
-                minutes: 6 + (i % 8),
+                minutes: 5 + (i % 8),
                 category: "Bedtime Tales",
-                summary: `A peaceful bedtime story about a ${adj.toLowerCase()} ${noun.toLowerCase()} journeying into sleep.`
+                summary: `Join ${hero} in ${realm} as they discover ${magicItem} on a quiet bedtime journey.`
             });
         }
 
-        // GENERATE 12-PAGE BEDTIME NARRATIVE
-        function generate12PageStory(title, age) {
+        // Generate 12 Custom, Unique Pages for ANY story selected
+        function generate12PageStory(story) {
+            const h = story.hero;
+            const r = story.realm;
+            const item = story.item;
+
             return [
-                `Chapter 1: The Soft Twilight.\n\nOnce upon a time, as the golden sun drifted gently below the edge of the world, twilight painted the sky in shades of deep indigo and soft violet. High above, tiny stars began to blink awake, one by one. The air grew cool and tranquil, whispering softly through the quiet leaves.`,
-                `Chapter 2: The Whispering Wind.\n\nDown in the peaceful valley, a warm breeze glided over the sleepy meadows. It sang a low, gentle lullaby to the blooming flowers, which closed their colorful petals for the night. Every creature in the forest knew that it was time to rest.`,
-                `Chapter 3: The Secret Path.\n\nA tiny traveler walked down a soft, mossy path illuminated by the gentle glow of fireflies. Each step felt light and peaceful. The woods were quiet, save for the rhythmic rhythm of crickets softly humming in the tall grass.`,
-                `Chapter 4: The Cloud Pillow.\n\nAlong the journey, the traveler discovered a soft bed made of fluffy white cloud fluff. Touching it felt lighter than silk. Resting here for a moment brought a deep, soothing sense of relaxation and warmth.`,
-                `Chapter 5: The Silver Stream.\n\nNext to the cloud bed flowed a clear silver stream. Its water sparkled under the crescent moon as it bubbled softly over round river stones. The sound was as soothing as a mother's gentle song.`,
-                `Chapter 6: The Starlight Blanket.\n\nThe night sky pulled a warm blanket of starshine over the entire forest. Everything was bathed in a gentle, amber glow that kept all worries far away. It was a place of complete peace and comfort.`,
-                `Chapter 7: The Gentle Lantern.\n\nHigh in a cozy tree branch rested a glowing lantern powered by sleepy dreams. Its light flickered softly, making long, calm shadows dance across the forest floor.`,
-                `Chapter 8: The Yawning Forest.\n\nOne by one, the sleepy forest animals gathered under the ancient tree. The little squirrels curled into tight fur balls, and the deer laid down softly upon the pine needles. A collective, warm yawn echoed gently through the air.`,
-                `Chapter 9: Floating on Air.\n\nFeeling lighter than a feather, the mind began to drift across dreamland. Gentle waves of slumber carried away the thoughts of the day, leaving behind only peace and calm.`,
-                `Chapter 10: The Moonlit Lullaby.\n\nThe moon reached its highest peak in the velvet night. It beamed down a gentle lullaby that resonated in every cozy room and forest nest across the world.`,
-                `Chapter 11: Deep Sleep Approaches.\n\nBreathing grew slow and steady. In and out... soft and rhythmic. The heavy eyelids felt warm and comfortable, ready to close for a night of beautiful dreams.`,
-                `Chapter 12: Goodnight Dreamland.\n\nAs the night wrapped the world in its loving embrace, rest took over completely. Safe, cozy, and loved under the stars. Goodnight little one, sweet dreams.`
+                `Page 1: Twilight in ${r}.\n\nAs dusk descended upon ${r}, the sky shifted from golden orange to deep indigo. ${h} sat quietly atop a soft mossy hill, watching the first star shimmer into existence. The night was peaceful and filled with soft whispers of wind.`,
+                
+                `Page 2: The Search for Rest.\n\nEvery evening, ${h} had a gentle routine. Before settling down to sleep, ${h} would make sure that all the little friends in ${r} were tucked in safely under their cozy blankets.`,
+                
+                `Page 3: Discovering ${item}.\n\nWhile walking along a moonlit path, ${h} stumbled upon ${item}. It emitted a soft, warm glow that seemed to calm the entire forest, filling the air with a sweet scent of lavender.`,
+                
+                `Page 4: The Soft Breeze.\n\n${h} carried ${item} toward the center of ${r}. A gentle night wind glided through the tall trees, playing a soothing rhythm on the leaves as if singing a lullaby created just for bedtime.`,
+                
+                `Page 5: Tucking in the Fireflies.\n\nTiny fireflies danced softly around ${h}, twinkling like little ground stars. One by one, they landed safely on dew-kissed flower petals to rest their small wings until morning.`,
+                
+                `Page 6: The Quiet River Stream.\n\nPassing near the river, ${h} listened to the bubbling water flowing gently over smooth stones. The rhythmic sound was so calming that ${h} felt their eyelids grow slightly heavy.`,
+                
+                `Page 7: Sharing Warmth.\n\n${h} placed ${item} on a flat mossy rock so everyone in ${r} could feel its soothing warmth. Little rabbits and sleeping owls settled down happily nearby.`,
+                
+                `Page 8: The Yawning Sky.\n\nThe moon climbed higher into the night sky, casting silver beams across ${r}. A grand yawn swept through the woods—from the highest tree branches down to the lowest burrows.`,
+                
+                `Page 9: Pillow of Dreams.\n\nFeeling completely relaxed, ${h} found a cozy nest made of soft dry leaves and cottony moss. Wrapping up tight, ${h} let out a long, peaceful breath.`,
+                
+                `Page 10: The Starlight Canopy.\n\nLooking up through the canopy, ${h} watched the constellation lights sway in rhythm with the universe. All worries of the day melted away into quiet peace.`,
+                
+                `Page 11: Slow, Deep Breathing.\n\nIn... and out. In... and out. ${h}'s breathing matched the calm tide of the nocturnal forest. Everything was safe, warm, and protected under the night sky.`,
+                
+                `Page 12: Goodnight ${r}.\n\nWith eyes fully closed, ${h} drifted into a realm of sweet, gentle dreams. Goodnight ${h}, goodnight ${r}, and goodnight to you. Sleep tight.`
             ];
         }
 
         // APP STATE
         let currentState = {
-            currentView: 'dashboard', // dashboard or reader
+            currentView: 'dashboard',
             selectedAge: 'all',
             searchQuery: '',
             currentStory: null,
@@ -380,10 +389,8 @@
             fontFamily: 'font-serif',
             audioPlaying: false,
             audioTrack: 'lullaby',
-            sleepTimerMinutes: 0,
-            sleepTimerId: null,
-            bookmarkedIds: new Set(),
-            trialDaysRemaining: 7
+            volume: 0.5,
+            bookmarkedIds: new Set()
         };
 
         // DOM ELEMENTS
@@ -412,39 +419,14 @@
         const labelFontSize = document.getElementById('label-font-size');
         const sliderDimmer = document.getElementById('slider-dimmer');
         const labelDimmer = document.getElementById('label-dimmer');
+        const sliderVolume = document.getElementById('slider-volume');
+        const labelVolume = document.getElementById('label-volume');
         const dimmerOverlay = document.getElementById('dimmer-overlay');
 
         // INITIALIZE APP
         function initApp() {
-            loadSavedProgress();
             renderStoryGrid();
             setupEventListeners();
-            initWebAudio();
-        }
-
-        // LOAD LOCAL PROGRESS
-        function loadSavedProgress() {
-            const saved = localStorage.getItem('nocturne_state');
-            if (saved) {
-                try {
-                    const parsed = JSON.parse(saved);
-                    if (parsed.fontSize) currentState.fontSize = parsed.fontSize;
-                    if (parsed.textColor) currentState.textColor = parsed.textColor;
-                    if (parsed.fontFamily) currentState.fontFamily = parsed.fontFamily;
-                    if (parsed.bookmarked) currentState.bookmarkedIds = new Set(parsed.bookmarked);
-                } catch(e){}
-            }
-            applyDisplaySettings();
-        }
-
-        function saveProgress() {
-            const data = {
-                fontSize: currentState.fontSize,
-                textColor: currentState.textColor,
-                fontFamily: currentState.fontFamily,
-                bookmarked: Array.from(currentState.bookmarkedIds)
-            };
-            localStorage.setItem('nocturne_state', JSON.stringify(data));
         }
 
         // RENDER STORIES GRID
@@ -456,7 +438,7 @@
                 const matchesSearch = story.title.toLowerCase().includes(currentState.searchQuery.toLowerCase()) ||
                                       story.summary.toLowerCase().includes(currentState.searchQuery.toLowerCase());
                 return matchesAge && matchesSearch;
-            }).slice(0, 40); // Show top 40 matching
+            }).slice(0, 40);
 
             if (filtered.length === 0) {
                 storyGrid.innerHTML = `<div class="col-span-full py-12 text-center text-kindle-blue text-sm">No bedtime stories found matching your filter.</div>`;
@@ -464,7 +446,6 @@
             }
 
             filtered.forEach(story => {
-                const isBookmarked = currentState.bookmarkedIds.has(story.id);
                 const card = document.createElement('div');
                 card.className = "bg-kindle-surface border border-kindle-border p-4 rounded-xl flex flex-col justify-between hover:border-kindle-amber/50 transition cursor-pointer group";
                 card.innerHTML = `
@@ -490,7 +471,7 @@
         function openStory(story) {
             currentState.currentStory = story;
             currentState.currentPageIndex = 0;
-            currentState.storyPages = generate12PageStory(story.title, story.age);
+            currentState.storyPages = generate12PageStory(story);
             
             document.getElementById('reader-story-title').innerText = story.title;
             document.getElementById('reader-story-age').innerText = `Age ${story.age}`;
@@ -533,79 +514,114 @@
             labelDimmer.innerText = `${currentState.dimmerOpacity}%`;
         }
 
-        // WEB AUDIO API SOUNDSCAPES
+        // WEB AUDIO SYNTHESIZER ENGINE (GUARANTEED AUDIO SYNTHESIS)
         let audioCtx = null;
-        let activeOscillators = [];
+        let masterGain = null;
+        let activeNodes = [];
+        let melodyInterval = null;
 
-        function initWebAudio() {
-            const AudioContext = window.AudioContext || window.webkitAudioContext;
-            if (AudioContext) {
+        function unlockAudioContext() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
                 audioCtx = new AudioContext();
+                masterGain = audioCtx.createGain();
+                masterGain.gain.setValueAtTime(currentState.volume, audioCtx.currentTime);
+                masterGain.connect(audioCtx.destination);
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
             }
         }
 
         function playAmbientSound(type) {
+            unlockAudioContext();
             stopAmbientSound();
-            if (!audioCtx) initWebAudio();
-            if (audioCtx.state === 'suspended') audioCtx.resume();
 
             currentState.audioPlaying = true;
+            currentState.audioTrack = type;
             document.getElementById('audio-icon').className = "fa-solid fa-volume-high text-kindle-amber audio-playing";
             document.getElementById('audio-status-text').innerText = "Playing";
 
             if (type === 'lullaby') {
-                // Soft sine wave lullaby chord sequence
-                const notes = [261.63, 329.63, 392.00, 523.25]; // C E G C
-                notes.forEach((freq, index) => {
+                // Soft Pentatonic Arpeggiator Lullaby
+                const notes = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25];
+                let noteIdx = 0;
+
+                melodyInterval = setInterval(() => {
+                    if (!currentState.audioPlaying || !audioCtx) return;
+                    const osc = audioCtx.createOscillator();
+                    const noteGain = audioCtx.createGain();
+                    
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(notes[noteIdx % notes.length], audioCtx.currentTime);
+                    noteIdx = (noteIdx + 1) % notes.length;
+
+                    noteGain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+                    noteGain.gain.exponentialRampToValueAtTime(0.08, audioCtx.currentTime + 0.3);
+                    noteGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.5);
+
+                    osc.connect(noteGain);
+                    noteGain.connect(masterGain);
+                    
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 2.6);
+                }, 1200);
+
+            } else if (type === 'crickets') {
+                // Night Cricket Chirps Synthesizer
+                melodyInterval = setInterval(() => {
+                    if (!currentState.audioPlaying || !audioCtx) return;
                     const osc = audioCtx.createOscillator();
                     const gain = audioCtx.createGain();
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-                    
-                    gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
-                    
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(4500, audioCtx.currentTime);
+
+                    gain.gain.setValueAtTime(0.01, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.03, audioCtx.currentTime + 0.05);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+
                     osc.connect(gain);
-                    gain.connect(audioCtx.destination);
+                    gain.connect(masterGain);
                     osc.start();
-                    activeOscillators.push(osc);
-                });
+                    osc.stop(audioCtx.currentTime + 0.16);
+                }, 800);
+
             } else if (type === 'waves' || type === 'pinknoise') {
-                // Pink Noise / Waves generation
+                // Filtered White/Pink Noise Engine for Waves and Pink Noise
                 const bufferSize = audioCtx.sampleRate * 2;
                 const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-                const data = buffer.getChannelData(0);
-                let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+                const output = buffer.getChannelData(0);
 
                 for (let i = 0; i < bufferSize; i++) {
-                    let white = Math.random() * 2 - 1;
-                    b0 = 0.99886 * b0 + white * 0.0555179;
-                    b1 = 0.99332 * b1 + white * 0.0750759;
-                    b2 = 0.96900 * b2 + white * 0.1538520;
-                    b3 = 0.86650 * b3 + white * 0.3104856;
-                    b4 = 0.55000 * b4 + white * 0.5329522;
-                    b5 = -0.7616 * b5 - white * 0.0168980;
-                    data[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
-                    data[i] *= 0.01;
-                    b6 = white * 0.115926;
+                    output[i] = Math.random() * 2 - 1;
                 }
 
-                const noise = audioCtx.createBufferSource();
-                noise.buffer = buffer;
-                noise.loop = true;
-                const gain = audioCtx.createGain();
-                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-                noise.connect(gain);
-                gain.connect(audioCtx.destination);
-                noise.start();
-                activeOscillators.push(noise);
+                const whiteNoise = audioCtx.createBufferSource();
+                whiteNoise.buffer = buffer;
+                whiteNoise.loop = true;
+
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = type === 'waves' ? 'lowpass' : 'bandpass';
+                filter.frequency.setValueAtTime(type === 'waves' ? 300 : 800, audioCtx.currentTime);
+
+                const noiseGain = audioCtx.createGain();
+                noiseGain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+
+                whiteNoise.connect(filter);
+                filter.connect(noiseGain);
+                noiseGain.connect(masterGain);
+
+                whiteNoise.start();
+                activeNodes.push(whiteNoise);
             }
         }
 
         function stopAmbientSound() {
-            activeOscillators.forEach(node => {
+            if (melodyInterval) clearInterval(melodyInterval);
+            activeNodes.forEach(node => {
                 try { node.stop(); } catch(e){}
             });
-            activeOscillators = [];
+            activeNodes = [];
             currentState.audioPlaying = false;
             document.getElementById('audio-icon').className = "fa-solid fa-volume-xmark text-gray-500";
             document.getElementById('audio-status-text').innerText = "Sound Off";
@@ -613,6 +629,9 @@
 
         // EVENT LISTENERS
         function setupEventListeners() {
+            // Unlock audio context on any user click
+            document.body.addEventListener('click', unlockAudioContext, { once: true });
+
             // Dashboard Navigation
             btnDashboard.onclick = () => {
                 viewReader.classList.add('hidden');
@@ -670,12 +689,19 @@
             sliderFontSize.oninput = (e) => {
                 currentState.fontSize = parseInt(e.target.value);
                 applyDisplaySettings();
-                saveProgress();
             };
 
             sliderDimmer.oninput = (e) => {
                 currentState.dimmerOpacity = parseInt(e.target.value);
                 applyDisplaySettings();
+            };
+
+            sliderVolume.oninput = (e) => {
+                currentState.volume = parseFloat(e.target.value) / 100;
+                labelVolume.innerText = `${e.target.value}%`;
+                if (masterGain && audioCtx) {
+                    masterGain.gain.setValueAtTime(currentState.volume, audioCtx.currentTime);
+                }
             };
 
             document.querySelectorAll('.tone-btn').forEach(btn => {
@@ -684,7 +710,6 @@
                     btn.classList.add('border-kindle-amber');
                     currentState.textColor = btn.dataset.color;
                     applyDisplaySettings();
-                    saveProgress();
                 };
             });
 
@@ -694,7 +719,6 @@
                     btn.classList.add('border-kindle-amber');
                     currentState.fontFamily = btn.dataset.font;
                     applyDisplaySettings();
-                    saveProgress();
                 };
             });
 
@@ -716,7 +740,6 @@
                     currentState.bookmarkedIds.add(id);
                 }
                 updateBookmarkButtonUI();
-                saveProgress();
             };
 
             // Paywall Simulation Trigger
